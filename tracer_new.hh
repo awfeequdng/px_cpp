@@ -1,17 +1,15 @@
 
 #pragma once
 
+#if !NDEBUG
 #include <cstddef>
 #include <unordered_map>
+#include <atomic>
+#include <iostream>
 
 void *operator new(size_t size, const char *file, long line);
+void *operator new(size_t);
 void operator delete(void *p);
-
-class MyAllocator {
-public:
-    MyAllocator();
-    ~MyAllocator();
-};
 
 class TracerNew{
     class TracerNewInfo {
@@ -24,10 +22,22 @@ class TracerNew{
         long line_;
     };
 public:
-    TracerNew() {}
-    ~ TracerNew() {}
+    TracerNew() {
+        ready.store(true);
+    }
+    ~ TracerNew() {
+        dump();
+        ready.store(false);
+    }
     void add(void *p, const char* file, long line) {
+        bool val = false;
+        if (!adding_info_.compare_exchange_strong(val, true)) {
+            return;
+        }
+        // std::cout << "before tracer_info_[p] = TracerNewInfo(file, line);" << std::endl;
         tracer_info_[p] = TracerNewInfo(file, line);
+        // std::cout << "after tracer_info_[p] = TracerNewInfo(file, line);" << std::endl;
+        adding_info_.store(false);
     }
     void remove(void *p) {
         auto it = tracer_info_.find(p);
@@ -36,10 +46,15 @@ public:
         }
     }
     void dump();
+public:
+    static std::atomic<bool> ready;
 private:
     std::unordered_map<void*, TracerNewInfo> tracer_info_;
+    std::atomic<bool> adding_info_{false};
+
 };
 
 extern TracerNew tracer_new;
 
-#define new new(__FILE__, __LINE__)
+#endif // !NDEBUG
+
