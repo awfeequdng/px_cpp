@@ -1,4 +1,6 @@
 
+all: debug
+
 release:
 	clang++ tracer_new.cc main.cc -o tracer_new -DNDEBUG=1
 

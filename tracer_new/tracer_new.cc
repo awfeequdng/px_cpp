@@ -6,22 +6,18 @@
 
 void* operator new(size_t size, const char *file, long line) {
     void *p = malloc(size);
-    // todo:
-    std::cout << "my operator new, " << p << ", size:" << size << ", file:" << file << ", line:" << line << std::endl;
-    tracer_new.add(p, file, line);
+    tracer_new.add(p, size, file, line);
     return p;
 }
 
 void *operator new(size_t size) {
     void *p = malloc(size);
-    std::cout << "my operator new, " << p << ", size:" << size << std::endl;
-    tracer_new.add(p, "unknow file", -1);
+    tracer_new.add(p, size, "unknow file", -1);
     return p;
 }
 
 void operator delete(void *p) {
     if (TracerNew::ready) {
-        std::cout << "remove: " << p << std::endl;
         tracer_new.remove(p);
     }
     free(p);
