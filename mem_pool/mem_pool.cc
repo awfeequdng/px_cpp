@@ -1,6 +1,6 @@
 #if !NDEBUG
 
-#include "tracer_new.hh"
+#include "mem_pool.hh"
 #include <atomic>
 #include <iostream>
 

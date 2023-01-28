@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <atomic>
 #include <iostream>
+#include "gc.hh"
 
 void *operator new(size_t size, const char *file, long line);
 void *operator new(size_t);
