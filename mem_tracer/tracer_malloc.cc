@@ -65,7 +65,7 @@ void TracerMalloc::add(void *p, size_t size, void*caller, const char* file, long
     }
     tracer_mtx_.lock();
     // todo: 为什么注释掉这一行会出现一个内存泄漏的地址
-    std::cout << "my malloc, " << p << ", caller:" << caller << ", size:" << size << ", file:" << file << ", line:" << line << std::endl;
+    // std::cout << "my malloc, " << p << ", caller:" << caller << ", size:" << size << ", file:" << file << ", line:" << line << std::endl;
     tracer_info_[p] = TracerMallocInfo(caller, file, line);
     tracer_mtx_.unlock();
     adding_info_.store(false);
@@ -75,7 +75,7 @@ void TracerMalloc::remove(void *p) {
     std::lock_guard<std::mutex> lock(tracer_mtx_);
     auto it = tracer_info_.find(p);
     if (it != tracer_info_.end()) {
-        std::cout << "my free: " << p << ", caller:" << it->second.caller() << ", file: " << it->second.file() << ", line:" << it->second.line() << std::endl;
+        // std::cout << "my free: " << p << ", caller:" << it->second.caller() << ", file: " << it->second.file() << ", line:" << it->second.line() << std::endl;
         tracer_info_.erase(it);
     }
 }
