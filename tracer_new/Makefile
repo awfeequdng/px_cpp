@@ -1,11 +1,16 @@
 
+SRC = tracer_new.cc main.cc tracer_malloc.cc
+
+CFLAGS = -g -ggdb
+LFLAGS = -ldl
+
 all: debug
 
 release:
-	clang++ tracer_new.cc main.cc -o tracer_new -DNDEBUG=1
+	clang++ ${SRC} -o tracer ${LFLAGS} ${CFLAGS} -DNDEBUG=1
 
 debug:
-	clang++ tracer_new.cc main.cc -o tracer_new
+	clang++ ${SRC} -o tracer ${LFLAGS} ${CFLAGS}
 
 clean:
-	rm -rf tracer_new
+	rm -rf tracer
