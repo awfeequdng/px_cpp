@@ -7,6 +7,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <atomic>
+#include <memory>
 
 void *malloc(size_t size);
 void free(void *p);
@@ -43,7 +44,7 @@ public:
     static std::atomic<bool> ready;
 private:
     std::mutex tracer_mtx_; // 该锁用来保护tracer_info
-    std::unordered_map<void*, TracerMallocInfo> tracer_info_;
+    std::unordered_map<void*, std::shared_ptr<TracerMallocInfo>> tracer_info_;
     std::atomic<bool> adding_info_{false};
 };
 

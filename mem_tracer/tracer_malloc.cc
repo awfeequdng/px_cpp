@@ -53,7 +53,7 @@ void TracerMalloc::add(void *p, size_t size, const char* file, long line) {
     tracer_mtx_.lock();
     // todo: 为什么注释掉这一行会出现一个内存泄漏的地址
     // std::cout << "my malloc, " << p << ", size:" << size << ", file:" << file << ", line:" << line << std::endl;
-    tracer_info_[p] = TracerMallocInfo(file, line);
+    tracer_info_[p] = std::make_shared<TracerMallocInfo>(file, line);
     tracer_mtx_.unlock();
     adding_info_.store(false);
 }
@@ -66,7 +66,7 @@ void TracerMalloc::add(void *p, size_t size, void*caller, const char* file, long
     tracer_mtx_.lock();
     // todo: 为什么注释掉这一行会出现一个内存泄漏的地址
     // std::cout << "my malloc, " << p << ", caller:" << caller << ", size:" << size << ", file:" << file << ", line:" << line << std::endl;
-    tracer_info_[p] = TracerMallocInfo(caller, file, line);
+    tracer_info_[p] = std::make_shared<TracerMallocInfo>(caller, file, line);
     tracer_mtx_.unlock();
     adding_info_.store(false);
 }
@@ -83,7 +83,7 @@ void TracerMalloc::remove(void *p) {
 void TracerMalloc::dump() {
     std::cout << "malloc leaky addr: " << std::endl;
     for (auto &info : tracer_info_) {
-        std::cout << info.first << "\tcaller: " << info.second.caller() << "\tfile: " << info.second.file() << "\tIn line: " << info.second.line() << std::endl;
+        std::cout << info.first << "\tcaller: " << info.second->caller() << "\tfile: " << info.second->file() << "\tIn line: " << info.second->line() << std::endl;
     }
 }
 

@@ -1,3 +1,4 @@
+#include <mutex>
 #if !NDEBUG
 
 #include "tracer_new.hh"
@@ -36,12 +37,15 @@ void TracerNew::add(void *p, size_t size, const char* file, long line) {
     if (!adding_info_.compare_exchange_strong(val, true)) {
         return;
     }
+    tracer_mtx.lock();
     // std::cout << "my operator new, " << p << ", size:" << size << ", file:" << file << ", line:" << line << std::endl;
-    tracer_info_[p] = TracerNewInfo(file, line);
+    tracer_info_[p] = std::make_shared<TracerNewInfo>(file, line);
+    tracer_mtx.unlock();
     adding_info_.store(false);
 }
 
 void TracerNew::remove(void *p) {
+    std::lock_guard<std::mutex> lock(tracer_mtx);
     auto it = tracer_info_.find(p);
     if (it != tracer_info_.end()) {
         // std::cout << "remove: " << p << ", file: " << it->second.file() << ", line:" << it->second.line() << std::endl;
@@ -52,7 +56,7 @@ void TracerNew::remove(void *p) {
 void TracerNew::dump() {
     std::cout << "new leaky addr: " << std::endl;
     for (auto &info : tracer_info_) {
-        std::cout << info.first << ":\t" << info.second.file() << "\tIn line: " << info.second.line() << std::endl;
+        std::cout << info.first << ":\t" << info.second->file() << "\tIn line: " << info.second->line() << std::endl;
     }
 }
 

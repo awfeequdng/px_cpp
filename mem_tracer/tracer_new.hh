@@ -1,11 +1,13 @@
 
 #pragma once
 
+#include <mutex>
 #if !NDEBUG
 #include <cstddef>
 #include <unordered_map>
 #include <atomic>
 #include <iostream>
+#include <memory>
 
 void *operator new(size_t size, const char *file, long line);
 void *operator new(size_t);
@@ -36,7 +38,8 @@ public:
 public:
     static std::atomic<bool> ready;
 private:
-    std::unordered_map<void*, TracerNewInfo> tracer_info_;
+    std::mutex tracer_mtx;
+    std::unordered_map<void*, std::shared_ptr<TracerNewInfo>> tracer_info_;
     std::atomic<bool> adding_info_{false};
 
 };
