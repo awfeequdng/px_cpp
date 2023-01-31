@@ -71,9 +71,18 @@ void test_forward1()
   fn(std::move(i));
 }
 
+
+void test_decay() {
+  std::cout << __FUNCTION__ << std::endl;
+  std::cout << type_traits::is_same_v<type_traits::decay_t<const int &>, int> << std::endl;
+  std::cout << type_traits::is_same_v<type_traits::decay_t<volatile const int &>, int> << std::endl;
+  std::cout << type_traits::is_same_v<type_traits::decay_t<volatile int &>, int> << std::endl;
+  std::cout << type_traits::is_same_v<type_traits::decay_t<int &>, int> << std::endl;
+}
 int main() {
     test_forward();
     test_forward1();
+    test_decay();
 
     return 0;
 }
