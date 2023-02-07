@@ -20,10 +20,9 @@ void test(T &&v) {
     // std::cout << "std::is_same_v<decltype(v), int&&>: " << std::is_same_v<decltype(v), int&&> << std::endl;
 
     // 优先推到出T&版本，而不是T&&版本
-    // test_forward(type_traits::forward(v));
+    test_forward(type_traits::forward(v));
     // 强制指定版本
-    test_forward(type_traits::forward<T>(v));
-    // test_forward(type_traits::forward<int&&>(20));
+    // test_forward(type_traits::forward<T>(v));
 }
 
 void test_forward() {
@@ -81,8 +80,11 @@ void test_decay() {
 }
 int main() {
     test_forward();
-    test_forward1();
-    test_decay();
+    int i = 1;
+    // type_traits::forward(i);
+    // type_traits::forward(0);
+    // test_forward1();
+    // test_decay();
 
     return 0;
 }

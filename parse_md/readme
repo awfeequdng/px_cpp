@@ -1,0 +1,11 @@
+
+# 大小端问题
+- length和field size等字段含有多个字节，这些字节是按大端存放，还是按小端存放？
+- 目前我的md.dat文件就统一按大端方式存储
+
+# trade 和 order中的sym必须以SH获SZ开头
+
+#
+
+# 通过create_md函数来创建`md.dat`这个二进制文件
+
