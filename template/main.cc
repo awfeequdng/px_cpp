@@ -2,6 +2,7 @@
 #include <type_traits>
 #include <utility>
 #include "type_traits.hh"
+#include "array.hh"
 
 void test_forward(int &&v) {
     std::cout << "right value: " << v << std::endl;
@@ -78,6 +79,27 @@ void test_decay() {
   std::cout << type_traits::is_same_v<type_traits::decay_t<volatile int &>, int> << std::endl;
   std::cout << type_traits::is_same_v<type_traits::decay_t<int &>, int> << std::endl;
 }
+
+void test_array() {
+  Array<10, int> arr;
+  std::cout << "array<10, int> = ";
+  for (int i = 0; i < arr.size(); i++) {
+    // std::cout << arr[i] << " ";
+    arr[i] = i;
+  }
+  for (int i = 0; i < arr.size(); i++) {
+    std::cout << arr[i] << " ";
+  }
+
+  std::cout << std::endl;
+
+  Array arr1 = {1, 2, 3, 4, 6, 7, 8, 9, 10, 11};
+  for (int i = 0; i < arr1.size(); i++) {
+    std::cout << arr1[i] << " ";
+  }
+  std::cout << std::endl;
+}
+
 int main() {
     test_forward();
     int i = 1;
@@ -85,6 +107,6 @@ int main() {
     // type_traits::forward(0);
     // test_forward1();
     // test_decay();
-
+    test_array();
     return 0;
 }
