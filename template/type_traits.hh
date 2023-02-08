@@ -57,6 +57,15 @@ struct decay : type_is<remove_const_t<remove_volatile_t<remove_reference_t<T>>>>
 template<typename T>
 using decay_t = typename decay<T>::type;
 
+// enable_if
+template<bool, typename T=void>
+struct enable_if {};
+template<typename T>
+struct enable_if<true, T> : type_is<T> {
+};
+template<bool v, typename T = void>
+using enable_if_t = typename enable_if<v, T>::type;
+
 // is lvalue_reference
 template <typename T>
 struct is_lvalue_reference : false_type {};
@@ -73,27 +82,27 @@ struct is_rvalue_reference<T&&> : true_type {};
 template<typename T>
 constexpr bool is_rvalue_reference_v = is_rvalue_reference<T>::value;
 
-// template <typename T>
-// T&& forward(remove_reference_t<T>&& v) {
-//     std::cout << "forward T&&" << std::endl;
-//     static_assert(!is_lvalue_reference_v<T>, "template argument"
-//                  "substituting T is a lvalue reference type");
-//     return static_cast<T&&>(v);
-// }
-
-// template <typename T>
-// T&& forward(remove_reference_t<T>& v) {
-//     std::cout << "forward T&" << std::endl;
-//     return static_cast<T&&>(v);
-// }
-
 template <typename T>
-T&& forward(T&& v) {
+T&& forward(remove_reference_t<T>&& v) {
     std::cout << "forward T&&" << std::endl;
-    // static_assert(!is_lvalue_reference_v<T>, "template argument"
-                //  "substituting T is a lvalue reference type");
+    static_assert(!is_lvalue_reference_v<T>, "template argument"
+                 "substituting T is a lvalue reference type");
     return static_cast<T&&>(v);
 }
+
+template <typename T>
+T&& forward(remove_reference_t<T>& v) {
+    std::cout << "forward T&" << std::endl;
+    return static_cast<T&&>(v);
+}
+
+// template <typename T>
+// T&& forward(T&& v) {
+//     std::cout << "forward T&&" << std::endl;
+//     // static_assert(!is_lvalue_reference_v<T>, "template argument"
+//                 //  "substituting T is a lvalue reference type");
+//     return static_cast<T&&>(v);
+// }
 
 // template <typename T>
 // T&& forward(T& v) {
