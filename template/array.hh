@@ -4,6 +4,8 @@
 #include <string>
 #include <type_traits>
 
+namespace my_std {
+
 template<size_t N, typename T>
 class Array {
 public:
@@ -22,3 +24,5 @@ public:
 
 template <typename...Args>
 Array(const Args&...args) -> Array<sizeof...(Args), std::common_type_t<Args...>>;
+
+} // namespace my_std

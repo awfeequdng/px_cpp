@@ -3,6 +3,7 @@
 #include <utility>
 #include "type_traits.hh"
 #include "array.hh"
+#include "any.hh"
 
 void test_forward(int &&v) {
     std::cout << "right value: " << v << std::endl;
@@ -81,7 +82,7 @@ void test_decay() {
 }
 
 void test_array() {
-  Array<10, int> arr;
+  my_std::Array<10, int> arr;
   std::cout << "array<10, int> = ";
   for (int i = 0; i < arr.size(); i++) {
     // std::cout << arr[i] << " ";
@@ -93,11 +94,23 @@ void test_array() {
 
   std::cout << std::endl;
 
-  Array arr1 = {1, 2, 3, 4, 6, 7, 8, 9, 10, 11};
+  my_std::Array arr1 = {1, 2, 3, 4, 6, 7, 8, 9, 10, 11};
   for (int i = 0; i < arr1.size(); i++) {
     std::cout << arr1[i] << " ";
   }
   std::cout << std::endl;
+}
+
+void test_any() {
+  std::cout << __FUNCTION__ << std::endl;
+
+  my_std::Any any;
+  any.set(2);
+  std::cout << "any: " << any << std::endl;
+  any.set(2.2);
+  std::cout << "any: " << any << std::endl;
+  any.set("hello world");
+  std::cout << "any: " << any << std::endl;
 }
 
 int main() {
@@ -108,8 +121,11 @@ int main() {
     // test_forward1();
     // test_decay();
     test_array();
+    test_any();
     type_traits::enable_if_t<true, int> a = 3;
     std::enable_if_t<true, int> b = 3;
     (type_traits::enable_if<true>::type )a;
+
+    std::common_type<int, double>::type c = 3;
     return 0;
 }
