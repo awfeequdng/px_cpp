@@ -1,35 +1,45 @@
 #include <iostream>
-
+#include <unordered_map>
 
 using namespace std;
-
-double round_to_tick(double price, double tick, bool ceil) {
-    // price = 1.3
-    // tick = 0.5
-    // ceil true: -> 1.5
-    //      false: -> 1.0
-    long long l_px = price * 1000000;
-    long long l_tick = tick * 1000000;
-
-    if (l_px % l_tick == 0) {
-        return l_px / 1000000.0;
+class A {
+public:
+    static A* instance() {
+        static A singleton;
+        return &singleton;
     }
+    int find_longest_sub_str(const std::string &str) {
+        int len = str.size();
+        if (len <= 1) return len;
 
-    auto r = (l_px + l_tick) % l_tick;
-    if (ceil) {
-        l_px = (l_px + l_tick) - r;
-    } else {
-        l_px = (l_px + l_tick) - r - l_tick;
+        unordered_map<char, int> pos;
+        int longest = 1;
+        int first = 0;
+        int last = 0;
+        pos[str[0]] = 0;
+        for (int i = 1; i < len; i++) {
+            auto &ch = str[i];
+            if (pos.find(ch) != pos.end() && pos[ch] >= first) {
+                first = pos[ch] + 1;
+                pos[ch] = i;
+            } else {
+                last = i;
+                pos[ch] = i;
+            }
+            if (last - first + 1 > longest) {
+                longest = last - first + 1;
+            }
+        }
+
+        return longest;
     }
-    return l_px / 1000000.0;
-
-}
+private:
+    A() {}
+};
 
 int main() {
-    std::cout << round_to_tick(1.3, 0.5, true) << std::endl;
-    std::cout << round_to_tick(1.3, 0.5, false) << std::endl;
-    std::cout << round_to_tick(1, 0.5, false) << std::endl;
-    std::cout << round_to_tick(1.9, 0.5, false) << std::endl;
+
+    cout << A::instance()->find_longest_sub_str("abacd") << std::endl;
+    cout << A::instance()->find_longest_sub_str("abacde") << std::endl;
     return 0;
 }
-

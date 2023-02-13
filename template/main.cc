@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <type_traits>
 #include <utility>
 #include "type_traits.hh"
@@ -127,5 +128,7 @@ int main() {
     (type_traits::enable_if<true>::type )a;
 
     std::common_type<int, double>::type c = 3;
+
+    std::shared_ptr<int> int1(new int(3));
     return 0;
 }

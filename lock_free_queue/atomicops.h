@@ -23,17 +23,29 @@ enum memory_order {
 	memory_order_sync = memory_order_seq_cst
 };
 
-// inline void compiler_fence(memory_order order)
-// {
-// 	switch (order) {
-// 		case memory_order_relaxed: break;
-// 		case memory_order_acquire: _ReadBarrier(); break;
-// 		case memory_order_release: _WriteBarrier(); break;
-// 		case memory_order_acq_rel: _ReadWriteBarrier(); break;
-// 		case memory_order_seq_cst: _ReadWriteBarrier(); break;
-// 		default: assert(false);
-// 	}
-// }
+inline void compiler_fence(memory_order order)
+{
+	switch (order) {
+		case memory_order_relaxed: break;
+		case memory_order_acquire: std::atomic_signal_fence(std::memory_order_acquire); break;
+		case memory_order_release: std::atomic_signal_fence(std::memory_order_release); break;
+		case memory_order_acq_rel: std::atomic_signal_fence(std::memory_order_acq_rel); break;
+		case memory_order_seq_cst: std::atomic_signal_fence(std::memory_order_seq_cst); break;
+		default: assert(false);
+	}
+}
+
+inline void fence(memory_order order)
+{
+	switch (order) {
+		case memory_order_relaxed: break;
+		case memory_order_acquire: std::atomic_thread_fence(std::memory_order_acquire); break;
+		case memory_order_release: std::atomic_thread_fence(std::memory_order_release); break;
+		case memory_order_acq_rel: std::atomic_thread_fence(std::memory_order_acq_rel); break;
+		case memory_order_seq_cst: std::atomic_thread_fence(std::memory_order_seq_cst); break;
+		default: assert(false);
+	}
+}
 
 template<typename T>
 class weak_atomic
