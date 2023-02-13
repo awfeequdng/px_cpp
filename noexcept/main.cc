@@ -5,6 +5,7 @@
 #include "noexcept_false.hh"
 #include "noexcept_true.hh"
 
+// 对noexcept讲解的文章见：https://zhuanlan.zhihu.com/p/606070702
 
 void throw_exception1() {
     std::cout << "throw exception1: " << std::endl;
