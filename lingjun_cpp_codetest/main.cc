@@ -6,7 +6,7 @@
 using namespace BBO;
 
 void test() {
-    auto md_parser = std::make_shared<MarketDataCsvParser>();
+    std::shared_ptr<MarketDataParser> md_parser = std::make_shared<MarketDataCsvParser>();
     md_parser->start_parse("rb2305.csv");
     int tick_cnt = 0;
     while (!md_parser->eof()) {
@@ -30,14 +30,13 @@ void test_order_book() {
         auto tick = md_parser->dequeue();
         if (tick) {
             tick_cnt++;
-            // std::cout << *tick << std::endl;
             order_book.onBookChange(*tick);
         }
-
     }
 }
 
 int main() {
     test();
+    test_order_book();
     return 0;
 }
