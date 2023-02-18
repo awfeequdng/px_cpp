@@ -2,7 +2,6 @@
 
 namespace BBO {
 
-
 void OrderBook::onBookChange(const Tick& tick) {
 
 }

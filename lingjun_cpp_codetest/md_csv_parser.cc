@@ -17,6 +17,7 @@ void MarketDataCsvParser::parse_md(const std::string &fname) {
     for (int i = 0; i < row_cnt; i++) {
         std::shared_ptr<Tick> tick = std::make_shared<Tick>();
         // todo: 当心1.1表示为1.09999999这种问题
+        // todo: 这个问题后面处理
         tick->bid_px[0] = 10000 * doc.GetCell<double>("BPrice1", i);
         tick->ask_px[0] = 10000 * doc.GetCell<double>("SPrice1", i);
         tick->bid_sz[0] = doc.GetCell<uint32_t>("BVol1", i);
@@ -42,6 +43,7 @@ void MarketDataCsvParser::parse_md(const std::string &fname) {
         tick->bid_sz[4] = doc.GetCell<uint32_t>("BVol5", i);
         tick->ask_sz[4] = doc.GetCell<uint32_t>("SVol5", i);
 
+        tick->ts = doc.GetCell<uint64_t>("time", i);
         while (!enqueue(tick)) {
             std::cerr << "enqueue failed in MarketDataCsvParser::parse_md" << std::endl;
             // sleep 1ms

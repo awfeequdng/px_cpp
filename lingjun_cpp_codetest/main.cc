@@ -19,6 +19,24 @@ void test() {
     std::cout << "parsed tick_cnt: " << tick_cnt << std::endl;
 }
 
+void test_order_book() {
+    auto md_parser = std::make_shared<MarketDataCsvParser>();
+    md_parser->start_parse("rb2305.csv");
+    OrderBook order_book;
+
+    int tick_cnt = 0;
+
+    while (!md_parser->eof()) {
+        auto tick = md_parser->dequeue();
+        if (tick) {
+            tick_cnt++;
+            // std::cout << *tick << std::endl;
+            order_book.onBookChange(*tick);
+        }
+
+    }
+}
+
 int main() {
     test();
     return 0;
