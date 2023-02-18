@@ -21,17 +21,17 @@ public:
         }
     }
     virtual bool eof() const {
+        std::cout << "eof: " << start_ << ", " << tick_in_que_ << " ," << tick_que_.size_approx() << std::endl;
         return start_.load(std::memory_order_relaxed) == false &&
                tick_in_que_.load(std::memory_order_relaxed) == 0;
     };
 
     inline std::shared_ptr<Tick> dequeue() {
-        if (!start_.load(std::memory_order_relaxed)) {
-            // not start parse market data yet
-            return {};
-        }
         std::shared_ptr<Tick> tick;
         tick_que_.try_dequeue(tick);
+        if (tick) {
+            tick_in_que_--;
+        }
         return tick;
     }
 
@@ -47,7 +47,9 @@ public:
 protected:
     virtual void parse_md(const std::string& fname) = 0;
     bool enqueue(const std::shared_ptr<Tick>& tick) {
-        return tick_que_.enqueue(tick);
+        auto ret = tick_que_.enqueue(tick);
+        tick_in_que_++;
+        return ret;
     }
 private:
     void parse(const std::string& fname) {

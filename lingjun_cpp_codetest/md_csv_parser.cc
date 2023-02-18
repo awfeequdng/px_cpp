@@ -48,6 +48,7 @@ void MarketDataCsvParser::parse_md(const std::string &fname) {
             std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
+    std::cout << "read csv over, row_cnt:" << row_cnt << std::endl;
 }
 
 } // namespace BBO

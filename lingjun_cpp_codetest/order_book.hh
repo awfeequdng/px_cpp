@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <ostream>
 #include <vector>
 
 namespace BBO {
@@ -10,6 +11,15 @@ struct Tick {
     uint64_t bid_sz[MD_LEVELS];
     uint32_t ask_px[MD_LEVELS]; // ask价格放大10000倍
     uint32_t ask_sz[MD_LEVELS];
+    friend std::ostream& operator << (std::ostream& os, const Tick& tick) {
+        for (int i = 0; i < MD_LEVELS; i++) {
+            os << "bp" << i << ": " << tick.bid_px[i] / 10000.0
+            << ", bs" << i << ": " << tick.bid_sz[i];
+            os << ", ap" << i << ": " << tick.ask_px[i] / 10000.0
+            << ", as" << i << ": " << tick.ask_sz[i] << std::endl;
+        }
+        return os;
+    }
 };
 
 struct Order{
