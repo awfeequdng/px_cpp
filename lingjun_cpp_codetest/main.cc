@@ -32,11 +32,38 @@ void test_order_book() {
             tick_cnt++;
             order_book.onBookChange(*tick);
         }
+        // just for test
+        if (tick_cnt > 1) {
+            auto orders = order_book.query_large_orders(268);
+            for (auto &ord : orders) {
+                std::cout << "order, level: " << ord.queue_position << ", qty: " << ord.quantity << ", ts: " << ord.last_modification_time << std::endl;
+            }
+            exit(0);
+        }
     }
+    std::cout << "order book: " << std::endl;
+    std::cout << order_book << std::endl;
 }
 
+void test_multimap() {
+    std::multimap<uint64_t, Order*> px2order_map;
+    px2order_map.insert({10, new Order(10, 0, 1, 0)});
+    px2order_map.insert({5, new Order(10, 0, 5, 0)});
+    px2order_map.insert({5, new Order(55, 55, 555, 0)});
+    px2order_map.insert({10, new Order(10, 1, 12, 0)});
+    px2order_map.insert({1, new Order(1, 2, 3, 0)});
+    for (auto [key, val] : px2order_map) {
+        std::cout << "key: " << key << ", " << val << std::endl;
+    }
+    auto it = px2order_map.lower_bound(5);
+    while (it != px2order_map.end()) {
+        std::cout << "key: " << it->first << ", value: (" << it->second->quantity << ", " << it->second->queue_position << ", " << it->second->last_modification_time << ")" << std::endl;
+        it++;
+    }
+}
 int main() {
-    test();
+    // test_multimap();
+    // test();
     test_order_book();
     return 0;
 }

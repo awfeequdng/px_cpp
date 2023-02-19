@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <ostream>
 #include <vector>
+#include <map>
+#include <unordered_map>
 
 namespace BBO {
 
@@ -25,21 +27,28 @@ struct Tick {
 };
 
 struct Order{
-    Order(uint32_t qty, uint32_t pos, uint64_t ts)
-        : quantity(qty), queue_position(pos), last_modification_time(ts) {
+    Order() {}
+    Order(uint32_t qty, int32_t pos, uint64_t ts, uint64_t px)
+        : quantity(qty),
+          queue_position(pos),
+          last_modification_time(ts),
+          price(px) {
     }
 
 	uint32_t quantity{0};
-	uint32_t queue_position{0};
+    // 正数为ask，负数为bid
+	int32_t queue_position{0};
 	uint64_t last_modification_time{0};
+    // 放大10000倍
+    uint64_t price{0};
     Order *next{nullptr};
 };
 
 struct HandicapNode {
     HandicapNode() {}
-    HandicapNode(uint64_t p, uint64_t q, uint64_t ts) : price(q), qty(q) {
+    HandicapNode(uint64_t p, uint64_t q, uint64_t ts) : price(p), qty(q) {
         this->num_orders = 1;
-        this->head = new Order(q, 0, ts);
+        this->head = new Order(q, 0, ts, p);
         this->tail = this->head;
     }
     // todo: 当心1.1 被标识为1.099999这种问题
@@ -57,7 +66,7 @@ public:
     // update order book using tick
     void onBookChange(const Tick& tick);
     // to query large orders (> x quantities) within 10 levels from order book.
-    std::vector<Order> query_large_orders(int quantity);
+    std::vector<Order> query_large_orders(int quantity, int max_level = 10);
 
     void createAskOrders(const Tick& tick);
     void createBidOrders(const Tick& tick);
@@ -68,11 +77,24 @@ public:
     void removeBidOrders(const Tick& tick);
 
     void releaseHandicapNode(HandicapNode* node);
-    Order* removeOrdersInChain(Order* order_head, uint32_t rm_sz, uint64_t ts);
-    Order* addOrdersInChain(Order* order_head, uint32_t add_sz, uint64_t ts);
+    Order* removeOrdersInChain(Order* order_head, uint32_t rm_sz, uint64_t ts, int& rm_ord_cnt);
+    Order* addOrdersInChain(Order* order_head, uint32_t add_sz, uint64_t ts, uint64_t px);
+
+    std::unordered_map<uint64_t, int> get_price_level();
+
+    friend std::ostream& operator << (std::ostream& os, const OrderBook& ob);
+    void print(std::ostream& os) const;
+private:
+    void print_ask(std::ostream &os) const;
+    void print_bid(std::ostream &os) const;
+
 private:
     HandicapNode *ask_head{nullptr};
     HandicapNode *bid_head{nullptr};
+
+    std::multimap<uint64_t, Order*> qty2order_map_;
 };
 
+// std::ostream& operator << (std::ostream& os, const BBO::OrderBook& ob);
 } // namespace BBO
+

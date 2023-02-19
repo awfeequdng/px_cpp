@@ -20,8 +20,8 @@ public:
             parse_th.join();
         }
     }
-    virtual bool eof() const {
-        std::cout << "eof: " << start_ << ", " << tick_in_que_ << " ," << tick_que_.size_approx() << std::endl;
+    bool eof() const {
+        // std::cout << "eof: " << start_ << ", " << tick_in_que_ << " ," << tick_que_.size_approx() << std::endl;
         return start_.load(std::memory_order_relaxed) == false &&
                tick_in_que_.load(std::memory_order_relaxed) == 0;
     };
@@ -30,7 +30,7 @@ public:
         std::shared_ptr<Tick> tick;
         tick_que_.try_dequeue(tick);
         if (tick) {
-            tick_in_que_--;
+            tick_in_que_.fetch_sub(1, std::memory_order_release);
         }
         return tick;
     }
@@ -47,8 +47,9 @@ public:
 protected:
     virtual void parse_md(const std::string& fname) = 0;
     bool enqueue(const std::shared_ptr<Tick>& tick) {
+        // 必须保证tick_in_que_先加1，然后数据在进入队列，不然可能会提前退出（队列中还有数据）
+        tick_in_que_.fetch_add(1, std::memory_order_acquire);
         auto ret = tick_que_.enqueue(tick);
-        tick_in_que_++;
         return ret;
     }
 private:
