@@ -1,0 +1,15 @@
+[submodule "contrib/concurrentqueue"]
+	path = contrib/concurrentqueue
+	url = https://github.com/cameron314/concurrentqueue.git
+[submodule "contrib/readerwriterqueue"]
+	path = contrib/readerwriterqueue
+	url = https://github.com/cameron314/readerwriterqueue
+[submodule "contrib/rapidcsv"]
+	path = contrib/rapidcsv
+	url = https://github.com/d99kris/rapidcsv.git
+[submodule "contrib/googletest"]
+	path = contrib/googletest
+	url = https://github.com/google/googletest
+[submodule "contrib/google-benchmark"]
+	path = contrib/google-benchmark
+	url = https://github.com/google/benchmark

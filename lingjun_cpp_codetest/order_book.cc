@@ -59,7 +59,6 @@ std::vector<Order> OrderBook::query_large_orders(int quantity, int max_level) {
 
     auto it = qty2order_map_.upper_bound(quantity);
     while (it != qty2order_map_.end()) {
-        std::cout << "upper_bound qty: " << it->first << std::endl;
         auto level_it = px_level_map.find(it->second->price);
 
         if (level_it != px_level_map.end() && abs(level_it->second) <= max_level) {

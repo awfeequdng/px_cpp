@@ -1,0 +1,3 @@
+[submodule "lingjun_cpp_coding_test/contrib/concurrentqueue"]
+	path = lingjun_cpp_coding_test/contrib/concurrentqueue
+	url = https://github.com/cameron314/concurrentqueue.git

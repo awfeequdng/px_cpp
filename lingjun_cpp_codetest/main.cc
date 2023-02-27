@@ -36,7 +36,10 @@ void test_order_book() {
         if (tick_cnt > 1) {
             auto orders = order_book.query_large_orders(268);
             for (auto &ord : orders) {
-                std::cout << "order, level: " << ord.queue_position << ", qty: " << ord.quantity << ", ts: " << ord.last_modification_time << std::endl;
+                std::cout << "order, level: " << ord.queue_position
+                          << ", qty: " << ord.quantity
+                          << ", ts: " << ord.last_modification_time
+                          << ", price: " << ord.price / 10000.0 << std::endl;
             }
             exit(0);
         }
@@ -61,6 +64,7 @@ void test_multimap() {
         it++;
     }
 }
+
 int main() {
     // test_multimap();
     // test();
