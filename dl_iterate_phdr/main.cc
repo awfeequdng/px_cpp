@@ -8,6 +8,10 @@
 int a[20];
 
 static int callback(struct dl_phdr_info* info, size_t size, void *data) {
+
+    // 保存之前的格式化标志
+    std::ios::fmtflags flag(std::cout.flags());
+
     std::cout << "base address of object: " << std::hex << (unsigned long)info->dlpi_addr << std::endl ;
     std::cout << "name of object: " << info->dlpi_name << std::endl;
     for (size_t header_index = 0; header_index < info->dlpi_phnum; ++header_index) {
@@ -28,6 +32,10 @@ static int callback(struct dl_phdr_info* info, size_t size, void *data) {
 
         }
     }
+
+    // 恢复格式化标志
+    std::cout.flags(flag);
+
     // The dl_iterate_phdr() function walks through the list of an application's shared objects and calls the function callback once for each object,
     // until either all shared objects have been processed or callback returns a nonzero value.
     return 0;
