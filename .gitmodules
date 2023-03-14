@@ -1,3 +1,6 @@
 [submodule "lingjun_cpp_coding_test/contrib/concurrentqueue"]
 	path = lingjun_cpp_coding_test/contrib/concurrentqueue
 	url = https://github.com/cameron314/concurrentqueue.git
+[submodule "any_serialize"]
+	path = any_serialize
+	url = git@github.com:awfeequdng/any_serialize.git
