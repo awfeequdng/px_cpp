@@ -5,11 +5,11 @@
 #include <memory>
 #include <optional>
 
-class SeakableReadBuffer : public ReadBuffer {
+class SeekableReadBuffer : public ReadBuffer {
 public:
-    SeakableReadBuffer(Position ptr, size_t size)
+    SeekableReadBuffer(Position ptr, size_t size)
         : ReadBuffer(ptr, size) {}
-    SeakableReadBuffer(Position ptr, size_t size, size_t offset)
+    SeekableReadBuffer(Position ptr, size_t size, size_t offset)
         : ReadBuffer(ptr, size, offset) {}
 
     // Shifts buffer current position to given offset.
@@ -25,7 +25,7 @@ public:
 
 };
 
-using SeakableReadBufferPtr = std::shared_ptr<SeakableReadBuffer>;
+using SeakableReadBufferPtr = std::shared_ptr<SeekableReadBuffer>;
 
 
 class SeekableReadBufferWithSize : public SeekableReadBuffer

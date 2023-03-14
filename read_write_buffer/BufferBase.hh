@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 #include <algorithm>
+
+#include "read_write_config.hh"
 /**
  Base class for ReadBuffer and WriteBuffer.
  Contains common types, variables, and functions.

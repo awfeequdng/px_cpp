@@ -1,8 +1,8 @@
 
-SRC = main.cc
+SRC = main.cc ReadBufferFromFileBase.cc ReadBufferFromFileDescriptor.cc ReadBufferFromIStream.cc
 
-CFLAGS = -g -ggdb -std=c++20
-LFLAGS = -ldl
+CFLAGS = -g -ggdb -std=c++20 -I../
+LFLAGS = -ldl -L../allocator -lallocator
 CXX = clang++
 BIN = read_write_buffer
 
