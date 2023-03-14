@@ -4,7 +4,7 @@ SRC = main.cc
 CFLAGS = -g -ggdb -std=c++20
 LFLAGS = -ldl
 CXX = clang++
-BIN = longest_sub_str
+BIN = test
 
 
 all: debug

@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <tuple>
 
 namespace my_traits {
 
@@ -98,6 +99,15 @@ T&& forward(remove_reference_t<T> &&v) {
     return static_cast<T&&>(v);
 }
 
+template <typename T>
+remove_reference_t<T>&& move(T&& v) {
+    return static_cast<remove_reference_t<T>&&>(v);
+}
+
+template <typename... Args>
+size_t count(const Args&...) {
+    return sizeof...(Args);
+}
 template <typename...Args>
 void test_args(Args... args) {
     ((std::cout << args << " "), ...);
@@ -107,5 +117,15 @@ void test_args(Args... args) {
 // void forward(Args... args) {
 //     test_args(forward<Args>(args)...);
 // }
+
+template <typename... Args>
+auto make_tuple(Args&...args) {
+    return std::tuple<Args&...>(args...);
+}
+
+template <typename... Args>
+std::tuple<Args&...> tie(Args... args) {
+    return {args...};
+}
 
 } // namespace my_traits
