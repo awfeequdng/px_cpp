@@ -91,6 +91,8 @@ protected:
         // Move position to the end of buffer to trigger call of 'next' on next reading.
         // Discard all data in current working buffer to prevent wrong assumptions on content
         // of buffer, e.g. for optimizations of seeks in seekable buffers.
+        working_buffer.resize(0);
+        pos = working_buffer.end();
     }
 
     // Read/Write position.
