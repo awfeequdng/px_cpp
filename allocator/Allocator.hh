@@ -10,6 +10,7 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+#include "Allocator_fwd.hh"
 #include "mremap.hh"
 
 // function getpagesize have already define in unistd.h

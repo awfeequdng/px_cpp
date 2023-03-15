@@ -1,12 +1,12 @@
 
+LIB_SRC = hex.cc
 
-LIB_SRC = Allocator.cc mremap.cc
 SRC = ${LIB_SRC} main.cc
 
 CFLAGS = -g -ggdb -std=c++20
 LFLAGS = -ldl
 CXX = clang++
-BIN = allocator
+BIN = hex
 
 all: debug
 
@@ -17,8 +17,8 @@ debug:
 	${CXX} ${SRC} -o ${BIN} ${LFLAGS} ${CFLAGS}
 
 so:
-	${CXX} ${LIB_SRC} -o lib${BIN}.so -shared -fPIC ${LFLAGS} ${CFLAGS} -DNDEBUG=1
-	mv lib${BIN}.so ../lib
+	${CXX} ${LIB_SRC} -o libhex.so -shared -fPIC ${LFLAGS} ${CFLAGS} -DNDEBUG=1
+	mv libhex.so ../lib
 
 run: all
 	./${BIN}

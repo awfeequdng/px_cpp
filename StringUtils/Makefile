@@ -1,12 +1,12 @@
 
-
-LIB_SRC = Allocator.cc mremap.cc
-SRC = ${LIB_SRC} main.cc
+LIB_SRC = StringUtils.cc
+SRC = main.cc ${LIB_SRC}
 
 CFLAGS = -g -ggdb -std=c++20
 LFLAGS = -ldl
 CXX = clang++
-BIN = allocator
+BIN = StringUtils
+
 
 all: debug
 
@@ -17,8 +17,8 @@ debug:
 	${CXX} ${SRC} -o ${BIN} ${LFLAGS} ${CFLAGS}
 
 so:
-	${CXX} ${LIB_SRC} -o lib${BIN}.so -shared -fPIC ${LFLAGS} ${CFLAGS} -DNDEBUG=1
-	mv lib${BIN}.so ../lib
+	${CXX} ${SRC} -o libstrutils.so -shared -fPIC ${LFLAGS} ${CFLAGS} -DNDEBUG=1
+	mv libstrutils.so ../lib
 
 run: all
 	./${BIN}

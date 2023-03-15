@@ -33,7 +33,6 @@ public:
     }
 
     off_t getPosition() override {
-        // todo: 没看懂
         return file_offset_of_buffer_end - (working_buffer.end() - pos);
     }
 
