@@ -16,7 +16,9 @@ int add2(int* __restrict a, int* __restrict b) {
     return *a + *b;
 }
 
-constexpr size_t ITER_COUNT = 100000000;
+// todo: 这里的计数值应该是没有生效的，add函数的调用应该被优化掉了
+// constexpr size_t ITER_COUNT = 100000000;
+constexpr size_t ITER_COUNT = 110;
 
 int main() {
     int *a = new int;
@@ -25,7 +27,7 @@ int main() {
     {
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
         for (size_t i = 0; i < ITER_COUNT; i++) {
-            add1(a, b);
+            int c = add2(a, b);
         }
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
         std::cout << "Time difference of add1 = " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() << "[ns]" << std::endl;
@@ -34,7 +36,7 @@ int main() {
     {
         std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
         for (size_t i = 0; i < ITER_COUNT; i++) {
-            add2(a, b);
+            add1(a, b);
         }
         std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
         std::cout << "Time difference of add2 = " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() << "[ns]" << std::endl;
