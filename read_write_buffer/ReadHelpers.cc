@@ -1,7 +1,60 @@
 #include "ReadHelpers.hh"
-
-// todo: find_symbols.hh这个文件还没看他的实现
+#include "StringUtils/StringUtils.hh"
+#include <sstream>
+#include <stdexcept>
 #include "find_symbols.hh"
+
+void inline throwAtAssertionFailed(const char* s, ReadBuffer& buf) {
+    std::stringstream out;
+    out << "Cannot parse input: expected '" << s;
+    if (buf.eof()) {
+        out << " at end of stream.";
+    } else {
+        out << " before: '" << String(buf.position());
+    }
+    throw std::runtime_error(out.str());
+}
+
+bool checkString(const char* s, ReadBuffer& buf) {
+    for (; *s; ++s) {
+        if (buf.eof() || *s != *buf.position())
+            return false;
+        ++buf.position();
+    }
+    return true;
+}
+
+bool checkStringCaseInsensitive(const char* s, ReadBuffer& buf) {
+    for (; *s; ++s) {
+        if (buf.eof())
+            return false;
+
+        char c = *buf.position();
+        if (!equalsCaseInsensitive(*s, c))
+            return false;
+
+        ++buf.position();
+    }
+    return true;
+}
+
+void assertString(const char* s, ReadBuffer& buf) {
+    if (!checkString(s, buf)) {
+        throwAtAssertionFailed(s, buf);
+    }
+}
+
+void assertEOF(ReadBuffer& buf) {
+    if (!buf.eof()) {
+        throwAtAssertionFailed("eof", buf);
+    }
+}
+
+void assertStringCaseInsensitive(const char* s, ReadBuffer& buf) {
+    if (!checkStringCaseInsensitive(s, buf)) {
+        throwAtAssertionFailed(s, buf);
+    }
+}
 
 void skipToNextLineOrEOF(ReadBuffer & buf)
 {

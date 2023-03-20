@@ -1,5 +1,5 @@
 
-LIB_SRC = getMappedArea.cc
+LIB_SRC = getMappedArea.cc MemoryStatisticsOS.cc
 
 SRC = ${LIB_SRC} main.cc
 

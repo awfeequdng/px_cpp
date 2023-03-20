@@ -116,3 +116,19 @@ inline bool isValidIdentifier(const std::string_view & str)
         /// NULL is not a valid identifier in SQL, any case.
         // && !(str.size() == strlen("null") && 0 == strncasecmp(str.data(), "null", strlen("null")));
 }
+
+inline char toLowerIfAlphaASCII(char c) {
+    return c | 0x20;
+}
+
+inline char toUpperIfAlphaASCII(char c) {
+    return c & (~0x20);
+}
+
+inline char alternateCaseIfAlphaASCII(char c) {
+    return c ^ 0x20;
+}
+
+inline bool equalsCaseInsensitive(char a, char b) {
+    return a == b || (isAlphaASCII(a) && alternateCaseIfAlphaASCII(a) == b);
+}
