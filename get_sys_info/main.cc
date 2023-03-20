@@ -3,6 +3,7 @@
 
 #include "getMappedArea.hh"
 #include "MemoryStatisticsOS.hh"
+#include "getExecutablePath.hh"
 
 int main() {
 
@@ -26,5 +27,8 @@ int main() {
     std::cout << "shared: " << data.shared / 1024 << "KB" << std::endl;
     std::cout << "code: " << data.code / 1024 << "KB" << std::endl;
     std::cout << "data_and_stack: " << data.data_and_stack / 1024 << "KB" << std::endl;
+
+    std::cout << "-------------- get executable path -------------------" << std::endl;
+    std::cout << "executable path: " << getExecutablePath() << std::endl;
     return 0;
 }

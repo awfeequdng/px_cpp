@@ -4,7 +4,9 @@ LIB_SRC = getMappedArea.cc MemoryStatisticsOS.cc
 SRC = ${LIB_SRC} main.cc
 
 CFLAGS = -g -ggdb -std=c++20 -I..
-LFLAGS = -ldl -L../lib -lallocator -lrwbuf -lstrutils -lhex -rpath ../lib
+
+# -lstdc++fs用来支持c++20的filesystem功能
+LFLAGS = -ldl -L../lib -lallocator -lrwbuf -lstrutils -lhex -lstdc++fs -rpath ../lib
 CXX = clang++
 BIN = get_sys_info
 
