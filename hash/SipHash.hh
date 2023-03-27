@@ -39,7 +39,6 @@ inline void unalignedStore(void * address,
     memcpy(address, &src, sizeof(src));
 }
 
-
 #define ROTL(x, b) static_cast<uint64_t>(((x) << (b)) | ((x) >> (64 - (b))))
 
 #define SIPROUND                                                  \
