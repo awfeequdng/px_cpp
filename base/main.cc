@@ -4,8 +4,10 @@
 
 #include "Throttler.hh"
 #include "stopwatch.hh"
+#include "TokenBucket.hh"
 
 #include <iostream>
+
 
 namespace ProfileEvents {
 extern Event MEMORY_ALLOC;
@@ -26,7 +28,8 @@ int main() {
     throttler.add(1);
     throttler.add(10);
     std::cout << "sleep time: " << stopwatch.elapsedSeconds() << "s" << std::endl;
-    throttler.add(10);
-    std::cout << "sleep time: " << stopwatch.elapsedSeconds() << "s" << std::endl;
+
+
+
     return 0;
 }
