@@ -1,11 +1,10 @@
 
 SRC = main.cc
 
-CFLAGS = -g -ggdb -std=c++20
-# -lstdc++fs用来支持c++20的filesystem功能
-LFLAGS = -ldl -lstdc++fs
+CFLAGS = -g -ggdb -std=c++20 -I..
+LFLAGS = -ldl -lhex -L../lib -rpath ../lib
 CXX = clang++
-BIN = get_executable_path
+BIN = siphash
 
 
 all: debug
@@ -21,4 +20,3 @@ run: all
 
 clean:
 	rm -rf ${BIN}
-

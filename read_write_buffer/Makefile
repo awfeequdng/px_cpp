@@ -1,5 +1,8 @@
 
 LIB_SRC = ReadBufferFromFileBase.cc ReadBufferFromFileDescriptor.cc ReadBufferFromIStream.cc ReadBufferFromFile.cc ReadHelpers.cc ReadBufferFromMemory.cc ReadBufferFromFileDecorator.cc
+LIB_SRC += LimitReadBuffer.cc
+LIB_SRC += WriteBufferFromFileBase.cc WriteBufferFromFileDescriptor.cc WriteBufferFromFile.cc
+
 SRC = ${LIB_SRC} main.cc
 
 CFLAGS = -g -ggdb -std=c++20 -I../
