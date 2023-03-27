@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <cstring>
 
+#include <iostream>
+
 #define APPLY_FOR_EVENTS(M) \
     M(MEMORY_ALLOC, "allocated memory count") \
     M(MEMORY_FREE, "free memory count")
@@ -73,9 +75,11 @@ const char* getDocumentation(Event event) {
 
 Event end() { return END; }
 
-void increment(Event event, Counter amount) {
+void increment(Event event, Count amount) {
     // not impl yet
-    throw std::runtime_error("not impl ProfileEvents::increment yet.");
+    global_counters.increment(event, amount);
+    std::cout << "not impl ProfileEvents::increment yet." << std::endl;
+    // throw std::runtime_error("not impl ProfileEvents::increment yet.");
 }
 
 CountersIncrement::CountersIncrement(Counters::Snapshot const& snapshot) {
