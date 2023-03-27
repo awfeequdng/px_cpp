@@ -6,6 +6,9 @@
 #include "stopwatch.hh"
 #include "TokenBucket.hh"
 
+#include "RateLimiter.hh"
+#include "TokenBucket.hh"
+
 #include <iostream>
 
 

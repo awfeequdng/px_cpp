@@ -7,6 +7,10 @@
 #include <stdint.h>
 #include <iostream>
 #include <unordered_map>
+#include <map>
+#include <vector>
+#include <mutex>
+#include <functional>
 
 #include <stdio.h>
 
@@ -86,7 +90,7 @@ private:
     double defaultBurstSize;
     std::map<T, double> rateMap;
     std::map<T, double> burstSizeMap;
-    boost::shared_mutex bucketsSMtx;
+    std::mutex bucketsSMtx;
     std::shared_ptr<UMAPTBUCKET> buckets;
     unsigned short updateTimes;
     ANALYZE analyze;
@@ -150,7 +154,7 @@ template<class T>
 bool RateLimiter<T>::aquire(const T &key) {
 
     try {
-        boost::shared_lock<boost::shared_mutex> g(bucketsSMtx);
+        std::lock_guard<std::mutex> g(bucketsSMtx);
         if (buckets->count(key) > 0) {
             return buckets->at(key)->aquire(now());
         }
@@ -160,7 +164,7 @@ bool RateLimiter<T>::aquire(const T &key) {
     }
 
     try {
-        boost::unique_lock<boost::shared_mutex> g(bucketsSMtx);
+        std::lock_guard<std::mutex> g(bucketsSMtx);
         (*buckets)[key] = std::make_shared<Bucket>(defaultRate, defaultBurstSize);
         return true;
     } catch (const std::exception &e) {
@@ -172,7 +176,7 @@ bool RateLimiter<T>::aquire(const T &key) {
 template<class T>
 double RateLimiter<T>::aquireCnt(const T &key, double consume) {
     try {
-        boost::shared_lock<boost::shared_mutex> g(bucketsSMtx);
+        std::lock_guard<std::mutex> g(bucketsSMtx);
         if (buckets->count(key) > 0) {
             return buckets->at(key)->aquireCnt(now(), consume);
         }
@@ -182,7 +186,7 @@ double RateLimiter<T>::aquireCnt(const T &key, double consume) {
     }
 
     try {
-        boost::unique_lock<boost::shared_mutex> g(bucketsSMtx);
+        std::lock_guard<std::mutex> g(bucketsSMtx);
         (*buckets)[key] = std::make_shared<Bucket>(defaultRate, defaultBurstSize);
         return buckets->at(key)->aquireCnt(now(), consume);
     } catch (const std::exception &e) {
@@ -213,7 +217,7 @@ void RateLimiter<T>::update(std::vector<std::string> &text, const std::string &k
 
     auto tmpHolder = buckets;
     try {
-        boost::unique_lock<boost::shared_mutex> g(bucketsSMtx);
+        std::lock_guard<std::mutex> g(bucketsSMtx);
         buckets = std::make_shared<UMAPTBUCKET>(std::move(newBuckets));
     } catch (const std::exception &e) {
         std::cerr << "update buckets exception: " << e.what() << std::endl;
