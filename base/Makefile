@@ -1,5 +1,5 @@
 
-LIB_SRC = ProfileEvents.cc sleep.cc
+LIB_SRC = ProfileEvents.cc sleep.cc Throttler.cc
 
 SRC = ${LIB_SRC} main.cc
 
