@@ -58,6 +58,8 @@ public:
 
     using Deleter = std::function<void()>;
     Deleter deleter;
+protected:
+    ThreadGroupStatusPtr thread_group;
 
 public:
     ThreadStatus();
