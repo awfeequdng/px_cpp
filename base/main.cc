@@ -1,7 +1,5 @@
 #include "sleep.hh"
 
-#include "ProfileEvents.hh"
-
 #include "Throttler.hh"
 #include "stopwatch.hh"
 #include "TokenBucket.hh"
@@ -12,9 +10,7 @@
 #include <iostream>
 #include <thread>
 
-namespace ProfileEvents {
-extern Event MEMORY_ALLOC;
-}
+#include "getThreadId.hh"
 
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
@@ -41,12 +37,6 @@ int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
 
-    ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC);
-    ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC);
-    std::cout << "ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
-    ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC, 4);
-    std::cout << "ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
-
     Stopwatch stopwatch;
     Throttler throttler(2);
     throttler.add(1);
@@ -54,6 +44,8 @@ int main() {
     std::cout << "sleep time: " << stopwatch.elapsedSeconds() << "s" << std::endl;
 
     test_ratelimiter();
+
+    std::cout << "get thread id: " << getThreadId() << std::endl;
 
     return 0;
 }
