@@ -7,11 +7,14 @@
 #include "RateLimiter.hh"
 #include "TokenBucket.hh"
 
+#include <cmath>
 #include <iostream>
 #include <thread>
 
 #include "getThreadId.hh"
 #include "Cpuid.hh"
+
+#include "NaNUtils.h"
 
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
@@ -41,6 +44,17 @@ void test_cpuid() {
 #undef PRINT_FLAG
 }
 
+void test_NaNUtils() {
+
+    std::cout << "--------" << __FUNCTION__ << "-----------" << std::endl;
+    std::cout << isFinite(2) << std::endl;
+    std::cout << isFinite(2222222222222222.0) << std::endl;
+    std::cout << isNaN(2) << std::endl;
+    std::cout << isNaN(NaNOrZero<float>()) << std::endl;
+    std::cout << isNaN(NaNOrZero<double>()) << std::endl;
+    std::cout << isNaN(NaNOrZero<int>()) << std::endl;
+}
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -56,6 +70,6 @@ int main() {
     std::cout << "get thread id: " << getThreadId() << std::endl;
 
     test_cpuid();
-
+    test_NaNUtils();
     return 0;
 }
