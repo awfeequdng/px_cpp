@@ -24,7 +24,6 @@ std::vector<ThreadGroupStatus::ProfileEventsCountersAndMemory> ThreadGroupStatus
 
 ThreadStatus::ThreadStatus()
     : thread_id{getThreadId()} {
-    //
     current_thread = this;
 }
 

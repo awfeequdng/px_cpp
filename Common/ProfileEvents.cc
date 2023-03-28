@@ -1,4 +1,6 @@
 #include "ProfileEvents.hh"
+
+#include "CurrentThread.hh"
 #include <atomic>
 #include <memory>
 #include <stdexcept>
@@ -76,10 +78,7 @@ const char* getDocumentation(Event event) {
 Event end() { return END; }
 
 void increment(Event event, Count amount) {
-    // not impl yet
-    global_counters.increment(event, amount);
-    std::cout << "not impl ProfileEvents::increment yet." << std::endl;
-    // throw std::runtime_error("not impl ProfileEvents::increment yet.");
+    CurrentThread::getProfileEvents().increment(event, amount);
 }
 
 CountersIncrement::CountersIncrement(Counters::Snapshot const& snapshot) {

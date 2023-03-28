@@ -4,6 +4,7 @@
 #include <thread>
 
 #include "ThreadStatus.hh"
+#include "CurrentThread.hh"
 
 namespace ProfileEvents {
 extern Event MEMORY_ALLOC;
@@ -35,16 +36,26 @@ void test_ThreadStatus() {
     std::thread th2(process2);
     th1.join();
     th2.join();
+
+
+    std::cout << "current_thread: " << current_thread << std::endl;
+    ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC);
+    ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC);
+    std::cout << "current thread profile events: ProfileEvents::MemoryAlloc: " << CurrentThread::getProfileEvents()[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
+    ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC, 1);
+    std::cout << "current thread profile events: ProfileEvents::MemoryAlloc: " << CurrentThread::getProfileEvents()[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
+    std::cout << "global profile events: ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
 }
+
 
 int main() {
 
-
+    std::cout << "current_thread: " << current_thread << std::endl;
     ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC);
     ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC);
-    std::cout << "ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
+    std::cout << "global counters ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
     ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC, 4);
-    std::cout << "ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
+    std::cout << "global counters ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
 
     test_ThreadStatus();
 
