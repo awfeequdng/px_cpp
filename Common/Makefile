@@ -1,5 +1,5 @@
 
-LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc
+LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc new_delete.cc MemoryTracker.cc
 
 SRC = ${LIB_SRC} main.cc
 

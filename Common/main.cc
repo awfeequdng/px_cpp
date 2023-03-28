@@ -6,6 +6,8 @@
 #include "ThreadStatus.hh"
 #include "CurrentThread.hh"
 
+#include "memory.hh"
+
 namespace ProfileEvents {
 extern Event MEMORY_ALLOC;
 }
