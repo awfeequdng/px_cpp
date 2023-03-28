@@ -11,6 +11,7 @@
 #include <thread>
 
 #include "getThreadId.hh"
+#include "Cpuid.hh"
 
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
@@ -33,6 +34,13 @@ void test_ratelimiter() {
     std::cout << rate_limiter.aquire(ip) << std::endl; // false (burst exhausted)
 }
 
+void test_cpuid() {
+    std::cout << "--------" << __FUNCTION__ << "-----------" << std::endl;
+#define PRINT_FLAG(X) std::cout << "have_"#X << ": " << CPU::CpuFlagsCache::have_##X << std::endl;
+    CPU_ID_ENUMERATE(PRINT_FLAG)
+#undef PRINT_FLAG
+}
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -46,6 +54,8 @@ int main() {
     test_ratelimiter();
 
     std::cout << "get thread id: " << getThreadId() << std::endl;
+
+    test_cpuid();
 
     return 0;
 }
