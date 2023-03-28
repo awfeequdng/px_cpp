@@ -5,7 +5,7 @@
 #include "base/getThreadId.hh"
 
 thread_local ThreadStatus* current_thread = nullptr;
-thread_local ThreadStatus* main_thread = nullptr;
+// thread_local ThreadStatus* main_thread = nullptr;
 
 std::vector<ThreadGroupStatus::ProfileEventsCountersAndMemory> ThreadGroupStatus::getProfileEventsCountersAndMemoryForThreads() {
     std::lock_guard<std::mutex> guard(mutex);

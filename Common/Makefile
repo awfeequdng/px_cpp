@@ -1,10 +1,10 @@
 
-LIB_SRC = ThreadStatus.cc ProfileEvents.cc
+LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc
 
 SRC = ${LIB_SRC} main.cc
 
 CFLAGS = -g -ggdb -std=c++20 -I.. -I../base
-LFLAGS = -ldl -L../lib -lbase
+LFLAGS = -ldl -L../lib -lbase -rpath ../lib -lpthread
 CXX = clang++
 BIN = common
 

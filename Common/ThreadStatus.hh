@@ -64,6 +64,10 @@ protected:
 public:
     ThreadStatus();
     ~ThreadStatus();
+
+    ThreadGroupStatusPtr getThreadGroup() const {
+        return thread_group;
+    }
 };
 
 // Creates ThreadStatus for the main thread
