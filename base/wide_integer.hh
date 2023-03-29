@@ -222,3 +222,11 @@ constexpr bool operator!=(const Arithmetic & rhs, const Arithmetic2 & lhs);
 
 
 } // namespace wide
+
+namespace std {
+template<size_t Bits, typename Signed>
+struct hash<wide::integer<Bits, Signed>>;
+
+} // namespace std
+
+#include "wide_integer_impl.hh"
