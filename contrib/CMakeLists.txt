@@ -5,6 +5,7 @@ enable_language( C CXX ASM )
 
 set(CMAKE_BUILD_TYPE Debug)
 # set(CMAKE_BUILD_TYPE Release)
+set(BUILD_SHARED_LIBS ON)
 
 message("Compiler Version: ${CMAKE_CXX_COMPILER_VERSION}")
 message("Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
