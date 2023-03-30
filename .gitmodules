@@ -4,3 +4,24 @@
 [submodule "any_serialize"]
 	path = any_serialize
 	url = git@github.com:awfeequdng/any_serialize.git
+[submodule "contrib/concurrentqueue"]
+	path = contrib/concurrentqueue
+	url = git@github.com:cameron314/concurrentqueue.git
+[submodule "contrib/readerwriterqueue"]
+	path = contrib/readerwriterqueue
+	url = git@github.com:cameron314/readerwriterqueue
+[submodule "contrib/googletest"]
+	path = contrib/googletest
+	url = git@github.com:google/googletest
+[submodule "contrib/libcxx"]
+	path = contrib/libcxx
+	url = git@github.com:ClickHouse-Extras/libcxx.git
+[submodule "contrib/llvm-project"]
+	path = contrib/llvm-project
+	url = git@github.com:ClickHouse/llvm-project
+[submodule "contrib/libcxxabi"]
+	path = contrib/libcxxabi
+	url = git@github.com:ClickHouse-Extras/libcxxabi.git
+[submodule "contrib/google-benchmark"]
+	path = contrib/google-benchmark
+	url = git@github.com:google/benchmark

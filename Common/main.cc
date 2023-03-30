@@ -55,9 +55,9 @@ void test_memory_tracker() {
     std::cout << "alloc : " << total_memory_tracker.get() << std::endl;
     auto p2 = new char[1024];
     std::cout << "alloc : " << total_memory_tracker.get() << std::endl;
-    delete p;
+    delete []p;
     std::cout << "alloc : " << total_memory_tracker.get() << std::endl;
-
+    delete []p2;
 }
 int main() {
 
