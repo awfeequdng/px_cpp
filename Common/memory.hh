@@ -1,8 +1,10 @@
 #pragma once
 #include "base/defines.hh"
+#include "CurrentMemoryTracker.hh"
 
 #include <cstddef>
 #include <new>
+#include <iostream>
 
 #if USE_JEMALLOC
 #include <jemalloc/jemalloc.h>
@@ -70,29 +72,33 @@ inline ALWAYS_INLINE std::size_t getActualAllocationSize(size_t size) {
 inline ALWAYS_INLINE void trackMemory(std::size_t size)
 {
     std::size_t actual_size = getActualAllocationSize(size);
-    // CurrentMemoryTracker::allocNoThrow(actual_size);
+    std::cout << "actual new size = " << actual_size << std::endl;
+    CurrentMemoryTracker::allocNoThrow(actual_size);
 }
 
 inline ALWAYS_INLINE void untrackMemory(void * ptr [[maybe_unused]], std::size_t size [[maybe_unused]] = 0) noexcept
 {
-//     try
-//     {
-// #if USE_JEMALLOC
-//         /// @note It's also possible to use je_malloc_usable_size() here.
-//         if (likely(ptr != nullptr))
-//             CurrentMemoryTracker::free(sallocx(ptr, 0));
-// #else
-//         if (size)
-//             CurrentMemoryTracker::free(size);
-// #    if defined(_GNU_SOURCE)
-//         /// It's innaccurate resource free for sanitizers. malloc_usable_size() result is greater or equal to allocated size.
-//         else
-//             CurrentMemoryTracker::free(malloc_usable_size(ptr));
-// #    endif
-// #endif
-//     }
-//     catch (...)
-//     {}
+    try
+    {
+#if USE_JEMALLOC
+        /// @note It's also possible to use je_malloc_usable_size() here.
+        if (likely(ptr != nullptr))
+            CurrentMemoryTracker::free(sallocx(ptr, 0));
+#else
+        if (size)
+            CurrentMemoryTracker::free(size);
+#    if defined(_GNU_SOURCE)
+        /// It's innaccurate resource free for sanitizers. malloc_usable_size() result is greater or equal to allocated size.
+        else {
+            auto actual_size = malloc_usable_size(ptr);
+            std::cout << "actual free size: " << actual_size << std::endl;
+            CurrentMemoryTracker::free(actual_size);
+        }
+#    endif
+#endif
+    }
+    catch (...)
+    {}
 }
 
 } // namespace Memory

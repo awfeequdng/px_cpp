@@ -7,6 +7,7 @@
 #include "CurrentThread.hh"
 
 #include "memory.hh"
+#include "MemoryTracker.hh"
 
 namespace ProfileEvents {
 extern Event MEMORY_ALLOC;
@@ -49,7 +50,15 @@ void test_ThreadStatus() {
     std::cout << "global profile events: ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
 }
 
+void test_memory_tracker() {
+    auto p = new int[1024];
+    std::cout << "alloc : " << total_memory_tracker.get() << std::endl;
+    auto p2 = new char[1024];
+    std::cout << "alloc : " << total_memory_tracker.get() << std::endl;
+    delete p;
+    std::cout << "alloc : " << total_memory_tracker.get() << std::endl;
 
+}
 int main() {
 
     std::cout << "current_thread: " << current_thread << std::endl;
@@ -60,6 +69,7 @@ int main() {
     std::cout << "global counters ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
 
     test_ThreadStatus();
+    test_memory_tracker();
 
     return 0;
 }

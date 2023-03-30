@@ -1,12 +1,12 @@
 
-LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc new_delete.cc MemoryTracker.cc MemoryTrackerBlockerInThread.cc CurrentMemoryTracker.cc
+LIB_SRC =
 
 SRC = ${LIB_SRC} main.cc
 
 CFLAGS = -g -ggdb -std=c++20 -I.. -I../base
 LFLAGS = -ldl -L../lib -lbase -rpath ../lib -lpthread
 CXX = clang++
-BIN = common
+BIN = format
 
 all: debug
 

@@ -16,6 +16,9 @@
 
 #include "NaNUtils.h"
 
+
+#include "wide_integer.hh"
+
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
     double requests_per_second = 1.0;
