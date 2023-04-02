@@ -25,3 +25,6 @@
 [submodule "contrib/google-benchmark"]
 	path = contrib/google-benchmark
 	url = git@github.com:google/benchmark
+[submodule "spectre/spectre-attack"]
+	path = spectre/spectre-attack
+	url = git@github.com:Eugnis/spectre-attack.git
