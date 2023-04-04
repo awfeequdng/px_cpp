@@ -28,3 +28,6 @@
 [submodule "spectre/spectre-attack"]
 	path = spectre/spectre-attack
 	url = git@github.com:Eugnis/spectre-attack.git
+[submodule "spectre/SpectrePoC"]
+	path = spectre/SpectrePoC
+	url = git@github.com:crozone/SpectrePoC.git
