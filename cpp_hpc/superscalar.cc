@@ -1,5 +1,6 @@
 #include "benchmark/benchmark.h"
 
+#include <cstdlib>
 #include <stdlib.h>
 #include <time.h>
 
@@ -304,6 +305,93 @@ void BM_instructions2(benchmark::State& state) {
     //state.SetBytesProcessed(N*sizeof(unsigned long)*state.iterations());
 }
 
+void BM_add2_multiply_sub_shift4(benchmark::State& state) {
+    srand(1);
+    const unsigned int N = state.range(0);
+    std::vector<unsigned long> v1(N), v2(N);
+    std::vector<unsigned long> v3(N), v4(N);
+    for (size_t i = 0; i < N; ++i) {
+        v1[i] = rand();
+        v2[i] = rand();
+        v3[i] = rand();
+        v4[i] = rand();
+    }
+    unsigned long* p1 = v1.data();
+    unsigned long* p2 = v2.data();
+    unsigned long* p3 = v3.data();
+    unsigned long* p4 = v4.data();
+    for (auto _ : state) {
+        unsigned long a1 = 0, a2 = 0;
+        unsigned long a3 = 0, a4 = 0;
+        for (size_t i = 0; i < N; ++i) {
+            a1 += p1[i] + p2[i];
+            a2 += p2[i] * p3[i];
+            a3 += p4[i] << 2;
+            a4 += p3[i] - p4[i];
+        }
+        benchmark::DoNotOptimize(a1);
+        benchmark::DoNotOptimize(a2);
+        benchmark::DoNotOptimize(a3);
+        benchmark::DoNotOptimize(a4);
+        benchmark::ClobberMemory();
+    }
+    state.SetItemsProcessed(N*state.iterations());
+    // state.SetBytesProcessed(N*sizeof(unsigned long)*state.iterations());
+}
+
+
+// void BM_max(benchmark::State& state) {
+//     srand(1);
+//     const unsigned int N = state.range(0);
+//     std::vector<unsigned long> v1(N), v2(N);
+//     for (size_t i = 0; i < N; ++i) {
+//         v1[i] = rand();
+//         v2[i] = rand();
+//     }
+//     unsigned long* p1 = v1.data();
+//     unsigned long* p2 = v2.data();
+//     for (auto _ : state) {
+//         unsigned long a1 = 0, a2 = 0;
+//         for (size_t i = 0; i < N; ++i) {
+//             a2 += (p1[i] > p2[i]) ? p1[i] : p2[i];
+//         }
+//         benchmark::DoNotOptimize(a1);
+//         benchmark::DoNotOptimize(a2);
+//         benchmark::ClobberMemory();
+//     }
+//     state.SetItemsProcessed(N*state.iterations());
+//     //state.SetBytesProcessed(N*sizeof(unsigned long)*state.iterations());
+// }
+
+// void BM_max_no_cmove(benchmark::State& state) {
+//     srand(1);
+//     const unsigned int N = state.range(0);
+//     std::vector<unsigned long> v1(N), v2(N);
+//     for (size_t i = 0; i < N; ++i) {
+//         v1[i] = rand();
+//         v2[i] = rand();
+//     }
+//     unsigned long* p1 = v1.data();
+//     unsigned long* p2 = v2.data();
+//     for (auto _ : state) {
+//         unsigned long a1 = 0, a2 = 0;
+//         for (size_t i = 0; i < N; ++i) {
+//             // a2 += (p1[i] > p2[i]) ? p1[i] : p2[i];
+//             if (p1[i] > p2[i]) {
+//                 a2 += p1[i];
+//             } else {
+//                 a2 *= p2[i];
+//             }
+//             // a2 += (p1[i] > p2[i]) ? p1[i] : p2[i];
+//         }
+//         benchmark::DoNotOptimize(a1);
+//         benchmark::DoNotOptimize(a2);
+//         benchmark::ClobberMemory();
+//     }
+//     state.SetItemsProcessed(N*state.iterations());
+//     //state.SetBytesProcessed(N*sizeof(unsigned long)*state.iterations());
+// }
+
 #define ARG ->Arg(1 << 22)
 BENCHMARK(BM_ptr_add) ARG;
 BENCHMARK(BM_vector_add) ARG;
@@ -316,5 +404,8 @@ BENCHMARK(BM_add_multiply2) ARG;
 BENCHMARK(BM_add2_multiply_sub_shift) ARG;
 BENCHMARK(BM_instructions1) ARG;
 BENCHMARK(BM_instructions2) ARG;
+BENCHMARK(BM_add2_multiply_sub_shift4) ARG;
+// BENCHMARK(BM_max) ARG;
+// BENCHMARK(BM_max_no_cmove) ARG;
 
 BENCHMARK_MAIN();
