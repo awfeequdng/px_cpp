@@ -34,7 +34,12 @@ run: ${EXECS}
 test_mca:
 	${CXX} -mavx2 -mllvm -x86-asm-syntax=intel -S mca_test.cc ${LFLAGS} ${CFLAGS} -o - | llvm-mca -mcpu=btver2 -timeline
 
+perf: perf_branch1
+	perf stat ./perf_branch1
+
+valgrind: perf_branch1
+	valgrind --tool=cachegrind ./perf_branch1
 
 clean:
-	rm -rf ${BIN} ${EXECS}
+	rm -rf ${BIN} ${EXECS} cachegrind.out.*
 
