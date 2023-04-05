@@ -31,3 +31,6 @@
 [submodule "spectre/SpectrePoC"]
 	path = spectre/SpectrePoC
 	url = git@github.com:crozone/SpectrePoC.git
+[submodule "contrib/liburing"]
+	path = contrib/liburing
+	url = git@github.com:axboe/liburing
