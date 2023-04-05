@@ -2,6 +2,7 @@
 
 #include "throwError.hh"
 #include <cstddef>
+#include <limits>
 #include <type_traits>
 
 namespace wide {
@@ -37,3 +38,23 @@ public:
 };
 
 } // namespace wide
+
+namespace std {
+
+// numeric limits
+template <size_t Bits, typename Signed>
+class numeric_limits<wide::integer<Bits, Signed>> {
+public:
+    static constexpr bool is_specialized = true;
+    static constexpr bool is_signed = is_same<Signed, signed>::value;
+    static constexpr bool is_integer = true;
+    static constexpr bool is_exact = true;
+    static constexpr bool has_infinity = false;
+    static constexpr bool has_quiet_NaN = false;
+    static constexpr bool has_signaling_NaN = true;
+    static constexpr std::float_denorm_style has_denorm = std::denorm_absent;
+    static constexpr bool has_denorm_loss = false;
+
+};
+
+} // namespace std

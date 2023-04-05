@@ -2,12 +2,19 @@
 LIB_SRC = superscalar.cc
 
 SRC = ${LIB_SRC}
+CFLAGS =
+CFLAGS += -I../contrib/libcxx/include -I../contrib/libcxxabi/include -I../contrib/libunwind/include
+CFLAGS += -I../contrib/google-benchmark/include
+CFLAGS += -std=c++20 -nostdinc++
+# CFALGS +=-Wl,-no-undefined
+# CFLAGS += -lgcc
 
-CFLAGS = -O3 -std=c++20 -I../contrib/google-benchmark/include
-# CFLAGS += -nodefaultlibs -lc -lm -lrt -lpthread -ldl -lgcc
-
-LFLAGS = -L../lib/contrib -rpath ../lib/contrib
-LFLAGS += -lcxx  -lcxxabi -lgbenchmark -lunwind
+LFLAGS =
+# LFLAGS += -fuse-ld=lld
+LFLAGS += -nodefaultlibs
+LFLAGS += -L../lib/contrib -rpath ../lib/contrib  -lcxx  -lcxxabi -lgbenchmark -lgbenchmark_main -lunwind
+LFLAGS +=
+LFLAGS +=  -lc -lm -lrt -lpthread -ldl
 
 CXX = clang++
 BIN = cpp_hpc

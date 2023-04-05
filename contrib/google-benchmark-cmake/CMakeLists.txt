@@ -25,16 +25,16 @@ set (SRCS
 add_library(gbenchmark "${SRCS}")
 target_include_directories(gbenchmark SYSTEM PUBLIC "${SRC_DIR}/../include")
 
-add_library(google_benchmark_main "${SRC_DIR}/benchmark_main.cc")
-target_link_libraries(google_benchmark_main PUBLIC gbenchmark)
+add_library(gbenchmark_main "${SRC_DIR}/benchmark_main.cc")
+target_link_libraries(gbenchmark_main PUBLIC gbenchmark)
 
 add_library(google_benchmark_all INTERFACE)
-target_link_libraries(google_benchmark_all INTERFACE gbenchmark google_benchmark_main)
+target_link_libraries(google_benchmark_all INTERFACE gbenchmark gbenchmark_main)
 
 add_library(ch_contrib::gbenchmark_all ALIAS google_benchmark_all)
 
 install(
-    TARGETS gbenchmark
+    TARGETS gbenchmark_main gbenchmark
     EXPORT global
     LIBRARY DESTINATION .
     ARCHIVE DESTINATION .

@@ -11,3 +11,4 @@ else ()
 endif ()
 
 message (STATUS "Using exception handler: ${EXCEPTION_HANDLING_LIBRARY}")
+
