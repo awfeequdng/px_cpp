@@ -100,7 +100,7 @@ target_link_libraries(contrib
     PUBLIC
     # ch_contrib::fmt
     pthread
-    ch_contrib::gtest_all
+    # ch_contrib::gtest_all
 )
 
 add_executable(contrib_main
