@@ -39,6 +39,7 @@ perf: perf_branch1
 
 valgrind: perf_branch1
 	valgrind --tool=cachegrind ./perf_branch1
+#   cg_annotate cachegrind.out.*
 
 clean:
 	rm -rf ${BIN} ${EXECS} cachegrind.out.*
