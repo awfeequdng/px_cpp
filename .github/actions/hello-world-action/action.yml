@@ -1,10 +1,16 @@
-name: "Example"
+name: "MyFirstAction"
 description: "Receives file and generates output"
+author: "pxcai"
 inputs:
   file-path: # id of input
     description: "Path to test script"
     required: true
-    default: "test-file.js"
+    default: "test.py"
 outputs:
   results-file: # id of output
     description: "Path to results file"
+runs:
+  steps:
+    - id: my-first-action
+      run: echo "This is my first action" >> $GITHUB_OUTPUT
+      shell: bash
