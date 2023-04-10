@@ -13,5 +13,5 @@ runs:
   using: "composite"
   steps:
     - id: my-first-action
-      run: echo "This is my first action" >> $GITHUB_OUTPUT
+      run: echo "This is my first action"
       shell: bash
