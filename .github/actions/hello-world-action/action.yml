@@ -10,6 +10,7 @@ outputs:
   results-file: # id of output
     description: "Path to results file"
 runs:
+  using: "composite"
   steps:
     - id: my-first-action
       run: echo "This is my first action" >> $GITHUB_OUTPUT
