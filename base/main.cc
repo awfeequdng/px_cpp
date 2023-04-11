@@ -17,7 +17,8 @@
 #include "NaNUtils.h"
 
 
-#include "wide_integer.hh"
+// #include "wide_integer.hh"
+#include "extended_types.h"
 
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
@@ -60,10 +61,10 @@ void test_NaNUtils() {
 
 void test_wide_integer() {
     std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
-    using Int128 = wide::integer<128, signed>;
-    using UInt128 = wide::integer<128, unsigned>;
-    using Int256 = wide::integer<256, signed>;
-    using UInt256 = wide::integer<256, unsigned>;
+    // using Int128 = wide::integer<128, signed>;
+    // using UInt128 = wide::integer<128, unsigned>;
+    // using Int256 = wide::integer<256, signed>;
+    // using UInt256 = wide::integer<256, unsigned>;
 
     static_assert(sizeof(Int128) == 16);
     static_assert(sizeof(UInt128) == 16);
