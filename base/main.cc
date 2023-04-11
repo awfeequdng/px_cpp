@@ -58,6 +58,27 @@ void test_NaNUtils() {
     std::cout << isNaN(NaNOrZero<int>()) << std::endl;
 }
 
+void test_wide_integer() {
+    std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
+    using Int128 = wide::integer<128, signed>;
+    using UInt128 = wide::integer<128, unsigned>;
+    using Int256 = wide::integer<256, signed>;
+    using UInt256 = wide::integer<256, unsigned>;
+
+    static_assert(sizeof(Int128) == 16);
+    static_assert(sizeof(UInt128) == 16);
+    static_assert(sizeof(UInt256) == 32);
+    static_assert(sizeof(Int256) == 32);
+
+    UInt128 a = 0xf, b = 0xffffffffffffffff;
+    UInt128 c = a + b;
+    UInt128 d = c - 0xff;
+    std::cout << std::hex << "c = " << c.items[UInt128::_impl::big(0)] << " " << c.items[UInt128::_impl::big(1)] << std::endl;
+    std::cout << std::hex << "d = " << d.items[UInt128::_impl::big(0)] << " " << d.items[UInt128::_impl::big(1)] << std::endl;
+    // std::cout << "c = " << c.items[0] << c.items[3] << std::endl;
+}
+
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -74,5 +95,6 @@ int main() {
 
     test_cpuid();
     test_NaNUtils();
+    test_wide_integer();
     return 0;
 }

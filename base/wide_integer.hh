@@ -47,16 +47,16 @@ public:
     constexpr integer<Bits, Signed>& operator=(Arithmetic rhs) noexcept;
 
     template <typename Arithmetic>
-    constexpr integer<Bits, Signed>& operator*=(const Arithmetic rhs) noexcept;
+    constexpr integer<Bits, Signed>& operator*=(const Arithmetic& rhs);
 
     template <typename Arithmetic>
-    constexpr integer<Bits, Signed>& operator/=(const Arithmetic rhs) noexcept;
+    constexpr integer<Bits, Signed>& operator/=(const Arithmetic& rhs);
 
     template <typename Arithmetic>
-    constexpr integer<Bits, Signed>& operator+=(const Arithmetic rhs) noexcept(std::is_same_v<Signed, unsigned>);
+    constexpr integer<Bits, Signed>& operator+=(const Arithmetic& rhs) noexcept(std::is_same_v<Signed, unsigned>);
 
     template <typename Arithmetic>
-    constexpr integer<Bits, Signed>& operator-=(const Arithmetic rhs) noexcept(std::is_same_v<Signed, unsigned>);
+    constexpr integer<Bits, Signed>& operator-=(const Arithmetic& rhs) noexcept(std::is_same_v<Signed, unsigned>);
 
     template <typename Integral>
     constexpr integer<Bits, Signed>& operator%=(const Integral& rhs);
@@ -74,9 +74,9 @@ public:
     constexpr integer<Bits, Signed>& operator>>=(int n) noexcept;
 
     constexpr integer<Bits, Signed>& operator++() noexcept(std::is_same_v<Signed, unsigned>);
-    constexpr integer<Bits, Signed>& operator++(int) noexcept(std::is_same_v<Signed, unsigned>);
+    constexpr integer<Bits, Signed> operator++(int) noexcept(std::is_same_v<Signed, unsigned>);
     constexpr integer<Bits, Signed>& operator--() noexcept(std::is_same_v<Signed, unsigned>);
-    constexpr integer<Bits, Signed>& operator--(int) noexcept(std::is_same_v<Signed, unsigned>);
+    constexpr integer<Bits, Signed> operator--(int) noexcept(std::is_same_v<Signed, unsigned>);
 
     // observers
     constexpr explicit operator bool() const noexcept;
