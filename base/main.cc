@@ -18,7 +18,9 @@
 
 
 // #include "wide_integer.hh"
-#include "extended_types.h"
+#include "extended_types.hh"
+
+#include "decimal.hh"
 
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
@@ -79,6 +81,22 @@ void test_wide_integer() {
     // std::cout << "c = " << c.items[0] << c.items[3] << std::endl;
 }
 
+void test_decimal() {
+    std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
+    NativeType<Decimal256> t256 = 20;
+    NativeType<Decimal128> t128 = 20;
+
+    std::cout << "typename of t256: " << typeid(t256).name() << std::endl;
+    std::cout << "typename of t128: " << typeid(t128).name() << std::endl;
+    Decimal256 d256 = t256;
+    Decimal128 d128 = t128;
+    Decimal64 d64 = 4;
+    Decimal32 d32 = 5;
+    std::cout << "hash d256 = " << std::hash<Decimal256>()(d256) << std::endl;
+    std::cout << "hash d128 = " << std::hash<Decimal128>()(d128) << std::endl;
+    std::cout << "hash d64 = " << std::hash<Decimal64>()(d64) << std::endl;
+    std::cout << "hash d32 = " << std::hash<Decimal32>()(d32) << std::endl;
+}
 
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
@@ -97,5 +115,6 @@ int main() {
     test_cpuid();
     test_NaNUtils();
     test_wide_integer();
+    test_decimal();
     return 0;
 }
