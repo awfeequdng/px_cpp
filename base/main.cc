@@ -22,6 +22,8 @@
 
 #include "decimal.hh"
 
+#include "wide_integer_to_string.hh"
+
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
     double requests_per_second = 1.0;
@@ -76,8 +78,16 @@ void test_wide_integer() {
     UInt128 a = 0xf, b = 0xffffffffffffffff;
     UInt128 c = a + b;
     UInt128 d = c - 0xff;
+
     std::cout << std::hex << "c = " << c.items[UInt128::_impl::big(0)] << " " << c.items[UInt128::_impl::big(1)] << std::endl;
     std::cout << std::hex << "d = " << d.items[UInt128::_impl::big(0)] << " " << d.items[UInt128::_impl::big(1)] << std::endl;
+
+    std::cout << std::hex << "c = " << c << std::endl;
+    std::cout << std::hex << "d = " << d << std::endl;
+
+    UInt256 u256 = 21;
+    std::cout << std::hex << "u256 = " << u256.items[UInt128::_impl::big(0)] << " " << u256.items[UInt128::_impl::big(1)] << std::endl;
+    std::cout << std::hex << "u256 = " << u256 << std::endl;
     // std::cout << "c = " << c.items[0] << c.items[3] << std::endl;
 }
 
