@@ -855,6 +855,9 @@ public:
 
             CompilerUInt128 a = (CompilerUInt128(numerator.items[little(1)]) << 64) + numerator.items[little(0)]; // NOLINT(clang-analyzer-core.UndefinedBinaryOperatorResult)
             CompilerUInt128 b = (CompilerUInt128(denominator.items[little(1)]) << 64) + denominator.items[little(0)]; // NOLINT(clang-analyzer-core.UndefinedBinaryOperatorResult)
+
+            // If you compile code with CLang and use __int128 arithmetics then these 4 functions are needed __divti3, __modti3, __udivti3, __umodti3 .
+            // 在使用clang编译，并且不连接libgcc时，会报__udivti3找不到的错误，所以目前的解决办法是加上-lgcc的链接参数
             CompilerUInt128 c = a / b; // NOLINT
 
             integer<Bits, Signed> res;

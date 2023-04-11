@@ -67,11 +67,6 @@ void test_NaNUtils() {
 
 void test_wide_integer() {
     std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
-    // using Int128 = wide::integer<128, signed>;
-    // using UInt128 = wide::integer<128, unsigned>;
-    // using Int256 = wide::integer<256, signed>;
-    // using UInt256 = wide::integer<256, unsigned>;
-
     static_assert(sizeof(Int128) == 16);
     static_assert(sizeof(UInt128) == 16);
     static_assert(sizeof(UInt256) == 32);
@@ -84,13 +79,12 @@ void test_wide_integer() {
     std::cout << std::hex << "c = " << c.items[UInt128::_impl::big(0)] << " " << c.items[UInt128::_impl::big(1)] << std::endl;
     std::cout << std::hex << "d = " << d.items[UInt128::_impl::big(0)] << " " << d.items[UInt128::_impl::big(1)] << std::endl;
 
-    std::cout << std::hex << "c = " << c << std::endl;
+    // std::cout << std::hex << "c = " << c << std::endl;
     std::cout << std::hex << "d = " << d << std::endl;
 
     UInt256 u256 = 21;
     std::cout << std::hex << "u256 = " << u256.items[UInt128::_impl::big(0)] << " " << u256.items[UInt128::_impl::big(1)] << std::endl;
     std::cout << std::hex << "u256 = " << u256 << std::endl;
-    // std::cout << "c = " << c.items[0] << c.items[3] << std::endl;
 }
 
 void test_decimal() {

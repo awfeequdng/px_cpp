@@ -4,7 +4,7 @@
 #include <type_traits>
 
 template <typename T>
-inline T unalignmentLoad(const void*  address) {
+inline T unalignedLoad(const void*  address) {
     T res{};
     memcpy(&res, address, sizeof(res));
     return res;
