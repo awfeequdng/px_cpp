@@ -164,3 +164,114 @@ struct StringRefHash64 {
         return CityHash_v1_0_2::CityHash64(x.data, x.size);
     }
 };
+
+#if defined (CRC_INT)
+
+// Parts are taken from CityHash.
+
+inline UInt64 hashLen16(UInt64 u, UInt64 v) {
+    return CityHash_v1_0_2::Hash128to64(CityHash_v1_0_2::uint128(u, v));
+}
+
+inline UInt64 shiftMix(UInt64 val) {
+    return val ^ (val >> 47);
+}
+
+inline UInt64 rotateByAtLeast1(UInt64 val, UInt8 shift) {
+    return val >> shift | (val << (64 - shift));
+}
+
+// todo: 一下这两个函数没看懂
+inline size_t hashLessThan8(const char * data, size_t size)
+{
+    static constexpr UInt64 k2 = 0x9ae16a3b2f90404fULL;
+    static constexpr UInt64 k3 = 0xc949d7c7509e6557ULL;
+
+    if (size >= 4)
+    {
+        UInt64 a = unalignedLoad<uint32_t>(data);
+        return hashLen16(size + (a << 3), unalignedLoad<uint32_t>(data + size - 4));
+    }
+
+    if (size > 0)
+    {
+        uint8_t a = data[0];
+        uint8_t b = data[size >> 1];
+        uint8_t c = data[size - 1];
+        uint32_t y = static_cast<uint32_t>(a) + (static_cast<uint32_t>(b) << 8);
+        uint32_t z = static_cast<uint32_t>(size) + (static_cast<uint32_t>(c) << 2);
+        return shiftMix(y * k2 ^ z * k3) * k2;
+    }
+
+    return k2;
+}
+
+inline size_t hashLessThan16(const char * data, size_t size)
+{
+    if (size > 8)
+    {
+        UInt64 a = unalignedLoad<UInt64>(data);
+        UInt64 b = unalignedLoad<UInt64>(data + size - 8);
+        return hashLen16(a, rotateByAtLeast1(b + size, static_cast<UInt8>(size))) ^ b;
+    }
+
+    return hashLessThan8(data, size);
+}
+
+struct CRC32Hash {
+    unsigned operator() (const StringRef& x) const {
+        const char* pos = x.data;
+        size_t size = x.size;
+
+        if (size == 0) return 0;
+
+        if (size < 8) {
+            return static_cast<unsigned>(hashLessThan8(x.data, x.size));
+        }
+
+        const char* end = pos + size;
+        unsigned res = -1U;
+
+        do {
+            UInt64 word =unalignedLoad<UInt64>(pos);
+            res = static_cast<unsigned>(CRC_INT(res, word));
+
+            pos += 8;
+        } while (pos + 8 < end);
+
+        UInt64 word = unalignedLoad<UInt64>(end - 8); // I'm not sure if this is normal
+        res = static_cast<unsigned>(CRC_INT(res, word));
+
+        return res;
+    }
+};
+
+struct StringRefHash : CRC32Hash {};
+
+#else // CRC_INT
+
+struct CRC32Hash
+{
+    unsigned operator() (StringRef /* x */) const
+    {
+       throw std::logic_error{"Not implemented CRC32Hash without SSE"};
+    }
+};
+
+struct StringRefHash : StringRefHash64 {};
+
+#endif // CRC_INT
+
+namespace std {
+    template <>
+    struct hash<StringRef> : public StringRefHash {};
+}
+
+namespace ZeroTraits {
+
+inline bool check(const StringRef& x) { return 0 == x.size; }
+inline void set(StringRef& x) { x.size = 0; }
+
+} // namespace ZeroTraits
+
+std::ostream& operator<<(std::ostream& os, const StringRef& str);

@@ -123,6 +123,14 @@ void test_terminal_color() {
     std::cout << "hash(100000): " << setColor(100000) << " hash(100000) message" << resetColor() << " ,reset color" << std::endl;
 }
 
+#include "StringRef.hh"
+void test_StringRef() {
+    std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
+    StringRef ref("hello world");
+    StringRef ref1("hello world");
+    std::cout << "ref == ref1 is: " << (ref == ref1) << std::endl;
+}
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -142,5 +150,6 @@ int main() {
     test_wide_integer();
     test_decimal();
     test_terminal_color();
+    test_StringRef();
     return 0;
 }
