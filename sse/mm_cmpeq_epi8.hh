@@ -8,6 +8,7 @@
 // 参考：https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#techs=SSE_ALL&ig_expand=963,937,945,955
 
 inline void test_mm_cmpeq_epi8() {
+    std::cout << " ----------" << __FUNCTION__ << "------------" << std::endl;
     char arr1[] = "0123456789abcdef";   //每个字符占1B，一共16B=128bit
     char arr2[] = "0123456789abcded";
                  //  1111111111111000
@@ -31,5 +32,7 @@ inline void test_mm_cmpeq_epi8() {
     std::cout << "mask_32 = " << std::hex << mask_32 << std::endl;
     // std::cout << "mask_64 = " << std::hex << mask_64 << std::endl;
 
-
+     __m128i a = _mm_set_epi8(0x80, 0x00, 0x7f, 0xff, 0x00, 0x01, 0xfe, 0xff, 0x01, 0x00, 0xff, 0x7f, 0x80, 0x00, 0x7f, 0xff);
+    int result = _mm_movemask_epi8(a);
+    std::cout << "result: " << std::hex << result << std::endl;
 }
