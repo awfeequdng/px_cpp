@@ -24,6 +24,8 @@
 
 #include "wide_integer_to_string.hh"
 
+#include "terminalColors.hh"
+
 void test_ratelimiter() {
     std::cout << "-------" << __FUNCTION__ << "---------" << std::endl;
     double requests_per_second = 1.0;
@@ -108,6 +110,25 @@ void test_decimal() {
     std::cout << "hash d32 = " << std::hash<Decimal32>()(d32) << std::endl;
 }
 
+void test_terminal_color() {
+    std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
+    std::cout << "Fatal: " << setColorForLogPriority(1) << " Fatal message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Critical: " << setColorForLogPriority(2) << " Critical message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Error: " << setColorForLogPriority(3) << " Error message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Warning: " << setColorForLogPriority(4) << " Warning message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Notice: " << setColorForLogPriority(5) << " Notice message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Information: " << setColorForLogPriority(6) << " Information message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Debug: " << setColorForLogPriority(7) << " Debug message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "Trace: " << setColorForLogPriority(8) << " Trace message" << resetColor() << " ,reset color" << std::endl;
+
+
+    std::cout << "hash(10): " << setColor(10) << " hash(10) message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "hash(100): " << setColor(100) << " hash(100) message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "hash(1000): " << setColor(1000) << " hash(1000) message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "hash(10000): " << setColor(10000) << " hash(10000) message" << resetColor() << " ,reset color" << std::endl;
+    std::cout << "hash(100000): " << setColor(100000) << " hash(100000) message" << resetColor() << " ,reset color" << std::endl;
+}
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -126,5 +147,6 @@ int main() {
     test_NaNUtils();
     test_wide_integer();
     test_decimal();
+    test_terminal_color();
     return 0;
 }

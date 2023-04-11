@@ -1,5 +1,5 @@
 
-LIB_SRC = sleep.cc Throttler.cc getThreadId.cc
+LIB_SRC = sleep.cc Throttler.cc getThreadId.cc terminalColors.cc
 
 SRC = ${LIB_SRC} main.cc
 
