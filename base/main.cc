@@ -140,7 +140,10 @@ void test_scope_guard() {
 
     {
         DEFER( std::cout << "hello world: scope guard" << std::endl; );
+        std::cout << "hello world after scope guard1" << std::endl;
     }
+
+    std::cout << "hello world after scope guard2" << std::endl;
 }
 
 

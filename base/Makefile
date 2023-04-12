@@ -40,7 +40,7 @@ release:
 	${CXX} ${SRC} -o ${BIN} ${LFLAGS} ${CFLAGS} -DNDEBUG=1
 
 debug:
-	${CXX} ${SRC} -E ${LFLAGS} ${CFLAGS} > ${BIN}.i
+	# ${CXX} ${SRC} -E ${LFLAGS} ${CFLAGS} > ${BIN}.i
 	${CXX} ${SRC} -o ${BIN} ${LFLAGS} ${CFLAGS}
 
 
