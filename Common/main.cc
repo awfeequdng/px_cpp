@@ -68,8 +68,8 @@ int main() {
     ProfileEvents::increment(ProfileEvents::MEMORY_ALLOC, 4);
     std::cout << "global counters ProfileEvents::MemoryAlloc: " << ProfileEvents::global_counters[ProfileEvents::MEMORY_ALLOC].load() << std::endl;
 
-    // test_ThreadStatus();
-    // test_memory_tracker();
+    test_ThreadStatus();
+    test_memory_tracker();
 
     auto p = new int;
     std::cout << "new ptr: " << p << std::endl;

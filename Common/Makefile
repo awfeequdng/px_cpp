@@ -38,9 +38,8 @@ LFLAGS += -ljemalloc
 LFLAGS += -L../lib/contrib
 LFLAGS +=-rpath ../lib/contrib
 
-LFLAGS += -L../lib
-LFLAGS += -lbase -rpath ../lib
-
+LFLAGS += -L../lib -rpath ../lib
+LFLAGS += -lbase
 LFLAGS += -lpthread -lc
 
 CXX = clang++
