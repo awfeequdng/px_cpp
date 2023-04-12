@@ -8,9 +8,11 @@ IFLAGS += -I.. -I../base
 IFLAGS += -I../contrib/jemalloc-cmake/include
 IFLAGS += -I../contrib/libcxx/include -I../contrib/libcxxabi/include -I../contrib/libunwind/include
 
-CFALGS = -O3
-CFLAGS += -g -ggdb -std=c++20   -DOS_LINUX
-# CFLAGS += -DUSE_JEMALLOC
+CFALGS =
+# CFALGS = -O3
+# CFLAGS += -g -ggdb
+CFLAGS += -std=c++20   -DOS_LINUX
+CFLAGS += -DUSE_JEMALLOC
 
 # 以下这两种配置方式都正确, 这是通过编译参数传递给链接器的参数，如下两种方式都是正确的
 # 如果将参数直接传递给链接器，只能是 --no-undefined, 不能写成-no-undefined
@@ -28,14 +30,18 @@ CFLAGS += -Wl,-no-undefined
 LFLAGS =
 # LFLAGS += --no-undefined
 LFLAGS += -nodefaultlibs -nostdinc++
-LFLAGS +=  -ldl -lpthread -lc
+# LFLAGS +=  -ldl
+
 LFLAGS += -lcxx -lcxxabi  -lunwind
+LFLAGS += -ljemalloc
+# LFLAGS += -lgbenchmark -lgtest
 LFLAGS += -L../lib/contrib
 LFLAGS +=-rpath ../lib/contrib
-# LFLAGS += -ljemalloc
+
 LFLAGS += -L../lib
 LFLAGS += -lbase -rpath ../lib
-# LFLAGS += -lgbenchmark -lgtest
+
+LFLAGS += -lpthread -lc
 
 CXX = clang++
 BIN = common

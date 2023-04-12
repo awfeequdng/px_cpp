@@ -12,10 +12,12 @@ CFALGS +=-Wl,-no-undefined
 
 LFLAGS =
 # LFLAGS += -fuse-ld=lld
-LFLAGS += -nodefaultlibs
-LFLAGS += -L../lib/contrib -rpath ../lib/contrib  -lcxx  -lcxxabi -lgbenchmark -lgbenchmark_main -lunwind
-LFLAGS += -lliburing
-LFLAGS +=  -lc -lm -lrt -lpthread -ldl
+# LFLAGS += -nodefaultlibs
+LFLAGS += -L../lib/contrib -rpath ../lib/contrib
+# LFLAGS += -lcxx  -lcxxabi -lgbenchmark -lgbenchmark_main -lunwind
+# LFLAGS += -lliburing
+LFLAGS += -luring
+# LFLAGS +=  -lc -lm -lrt -lpthread -ldl
 
 CXX = clang++
 BIN = io_uring

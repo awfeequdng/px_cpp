@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <initializer_list>
 #include <limits>
+#include <cmath>
 #include <type_traits>
 
 #define CONSTEXPR_FROM_DOUBLE constexpr

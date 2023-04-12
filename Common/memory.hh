@@ -83,6 +83,7 @@ inline ALWAYS_INLINE void untrackMemory(void * ptr [[maybe_unused]], std::size_t
 #if USE_JEMALLOC
         /// @note It's also possible to use je_malloc_usable_size() here.
         if (likely(ptr != nullptr)) {
+            std::cout << "free ptr: " << ptr << std::endl;
             auto actual_size = sallocx(ptr, 0);
             std::cout << "actual free size: " << actual_size << std::endl;
             CurrentMemoryTracker::free(actual_size);
