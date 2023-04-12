@@ -3,16 +3,39 @@ LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc new_delete.cc Memory
 
 SRC = ${LIB_SRC} main.cc
 
-IFLAGS = -I../contrib/jemalloc-cmake/include
-CFLAGS = -g -ggdb -std=c++20 -I.. -I../base -DUSE_JEMALLOC -DOS_LINUX
+IFLAGS =
+IFLAGS += -I.. -I../base
+IFLAGS += -I../contrib/jemalloc-cmake/include
+IFLAGS += -I../contrib/libcxx/include -I../contrib/libcxxabi/include -I../contrib/libunwind/include
+
+CFALGS = -O3
+CFLAGS += -g -ggdb -std=c++20   -DOS_LINUX
+# CFLAGS += -DUSE_JEMALLOC
+
+# 以下这两种配置方式都正确, 这是通过编译参数传递给链接器的参数，如下两种方式都是正确的
+# 如果将参数直接传递给链接器，只能是 --no-undefined, 不能写成-no-undefined
+CFLAGS += -Wl,-no-undefined
+# CFLAGS += -Wl,--no-undefined
+# CFLAG += -Wl,--unresolved-symbols=ignore-all
+# CFLAG += -Wl,--unresolved-symbols=report-all
+# CFLAG += -Wl,--unresolved-symbols=ignore-in-shared-libs
+# CFLAG += -Wl,--unresolved-symbols=ignore-in-object-files
+# CFLAGS += -Wl,--warn-unresolved-symbols
+
+# CFLAGS += -Wl,--allow-shlib-undefined
+# CFLAGS += -Wl,--no-allow-shlib-undefined
 
 LFLAGS =
-# 注意：libcxx libcxxabi一定要放在所有链接库的最前面，不然libcxx会优先使用系统下的库，导致segment fault
-# 主要是由于base依赖了libstdc++，是的这个动态库在我们的libcxx和libcxxabi前面，符号就优先从libstdc++中查找了，最终导致segment fault
-# LFLAGS += -L../lib/contrib -Wl,--start-group -lcxx -lcxxabi -lgtest -lgbenchmark -lunwind -ljemalloc -Wl,--end-group
-LFLAGS +=  -ldl -lpthread
-LFLAGS += -L../lib/contrib -rpath ../lib/contrib -lcxx -lcxxabi -lgtest -lgbenchmark -lunwind -ljemalloc
-LFLAGS += -L../lib -lbase -rpath ../lib
+# LFLAGS += --no-undefined
+LFLAGS += -nodefaultlibs -nostdinc++
+LFLAGS +=  -ldl -lpthread -lc
+LFLAGS += -lcxx -lcxxabi  -lunwind
+LFLAGS += -L../lib/contrib
+LFLAGS +=-rpath ../lib/contrib
+# LFLAGS += -ljemalloc
+LFLAGS += -L../lib
+LFLAGS += -lbase -rpath ../lib
+# LFLAGS += -lgbenchmark -lgtest
 
 CXX = clang++
 BIN = common
