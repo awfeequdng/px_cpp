@@ -296,7 +296,7 @@ end:
 
 template <ReadIntTextCheckOverflow check_overflow = ReadIntTextCheckOverflow::DO_NOT_CHECK_OVERFLOW, typename T>
 void readIntText(T& x, ReadBuffer& buf) {
-    if constexpr (is_decimal_v<T>) {
+    if constexpr (is_decimal<T>) {
     }
     readIntTextImpl<T, void, check_overflow>(x, buf);
 }

@@ -32,7 +32,7 @@ public:
 
     // Close file before destruction of object.
 
-    std::string getFileName() const {
+    std::string getFileName() const override {
         return file_name;
     }
 private:
