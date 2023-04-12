@@ -131,6 +131,20 @@ void test_StringRef() {
     std::cout << "ref == ref1 is: " << (ref == ref1) << std::endl;
 }
 
+#include "scope_guard.hh"
+void test_scope_guard() {
+    std::cout << "--------- " << __FUNCTION__ << "_________" << std::endl;
+    auto f = [&](){
+        std::cout << "hello world annoymous function" << std::endl;
+    };
+
+    {
+        DEFER( std::cout << "hello world: scope guard" << std::endl; );
+    }
+}
+
+
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -151,5 +165,7 @@ int main() {
     test_decimal();
     test_terminal_color();
     test_StringRef();
+
+    test_scope_guard();
     return 0;
 }

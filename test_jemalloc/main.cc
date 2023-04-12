@@ -1,10 +1,14 @@
 #include <iostream>
+#include <type_traits>
 #include <unordered_map>
 
 
 #include <jemalloc/jemalloc.h>
 
 int main() {
+
+    std::cout << std::is_constructible_v<bool, int> << std::endl;
+
 
     auto ptr = new int[1024];
     std::cout << "new ptr: " << ptr << ", size = " << 1024 * sizeof(int) << std::endl;
@@ -15,6 +19,7 @@ int main() {
 
     delete []ptr;
     std::cout << "delete ptr" << std::endl;
+
 
     return 0;
 }
