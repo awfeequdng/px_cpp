@@ -4,6 +4,8 @@
 #include "base/noncopyable.hh"
 
 #include "ProfileEvents.hh"
+#include "MemoryTracker.hh"
+
 #include <functional>
 #include <mutex>
 #include <vector>
@@ -56,11 +58,12 @@ public:
     // merge them into common entity
     ProfileEvents::Counters performance_counters{VariableContext::Thread};
 
+    MemoryTracker memory_tracker{VariableContext::Thread};
+
     using Deleter = std::function<void()>;
     Deleter deleter;
 protected:
     ThreadGroupStatusPtr thread_group;
-
 public:
     ThreadStatus();
     ~ThreadStatus();

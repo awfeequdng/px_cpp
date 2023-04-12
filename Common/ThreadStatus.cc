@@ -21,7 +21,6 @@ std::vector<ThreadGroupStatus::ProfileEventsCountersAndMemory> ThreadGroupStatus
     }
     return stats;
 }
-
 ThreadStatus::ThreadStatus()
     : thread_id{getThreadId()} {
     current_thread = this;
@@ -48,6 +47,9 @@ ThreadStatus::~ThreadStatus() {
 }
 
 ThreadStatus* MainThreadStatus::main_thread = nullptr;
+/// NOTE: 在主线程开始的地方调用一次MainThreadStatus::getInstance()，从而得到主线程的状态，
+/// 然后其他线程中通过ThreadStatus status；创建子线程的状态。
+/// 主线程的状态只能通过MainThreadStatus::getInstance()创建
 MainThreadStatus& MainThreadStatus::getInstance() {
     static MainThreadStatus thread_status;
     return thread_status;

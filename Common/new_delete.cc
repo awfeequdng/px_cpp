@@ -1,7 +1,6 @@
 #include "memory.hh"
 #include <cstddef>
 #include <new>
-
 /// Replace default new/delete with memory tracking versions.
 /// @sa https://en.cppreference.com/w/cpp/memory/new/operator_new
 ///     https://en.cppreference.com/w/cpp/memory/new/operator_delete

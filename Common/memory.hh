@@ -4,11 +4,11 @@
 
 #include <cstddef>
 #include <new>
-#include <iostream>
 
 #if USE_JEMALLOC
 #include <jemalloc/jemalloc.h>
 #else
+// libc的malloc声明在这个头文件中，一般我们只需要包含这两个头文件之一就行
 #include <cstdlib>
 #endif
 
@@ -72,7 +72,7 @@ inline ALWAYS_INLINE std::size_t getActualAllocationSize(size_t size) {
 inline ALWAYS_INLINE void trackMemory(std::size_t size)
 {
     std::size_t actual_size = getActualAllocationSize(size);
-    std::cout << "actual new size = " << actual_size << std::endl;
+    // std::cout << "actual new size = " << actual_size << std::endl;
     CurrentMemoryTracker::allocNoThrow(actual_size);
 }
 
@@ -83,9 +83,9 @@ inline ALWAYS_INLINE void untrackMemory(void * ptr [[maybe_unused]], std::size_t
 #if USE_JEMALLOC
         /// @note It's also possible to use je_malloc_usable_size() here.
         if (likely(ptr != nullptr)) {
-            std::cout << "free ptr: " << ptr << std::endl;
+            // std::cout << "free ptr: " << ptr << std::endl;
             auto actual_size = sallocx(ptr, 0);
-            std::cout << "actual free size: " << actual_size << std::endl;
+            // std::cout << "actual free size: " << actual_size << std::endl;
             CurrentMemoryTracker::free(actual_size);
         }
 #else
@@ -95,7 +95,7 @@ inline ALWAYS_INLINE void untrackMemory(void * ptr [[maybe_unused]], std::size_t
         /// It's innaccurate resource free for sanitizers. malloc_usable_size() result is greater or equal to allocated size.
         else {
             auto actual_size = malloc_usable_size(ptr);
-            std::cout << "actual free size: " << actual_size << std::endl;
+            // std::cout << "actual free size: " << actual_size << std::endl;
             CurrentMemoryTracker::free(actual_size);
         }
 #    endif

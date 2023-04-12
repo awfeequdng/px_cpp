@@ -1,12 +1,11 @@
 #include "MemoryTracker.hh"
 #include "CurrentThread.hh"
 #include "CurrentMemoryTracker.hh"
-
 namespace  {
 MemoryTracker* getMemoryTracker() {
-    // if (auto* thread_memory_tracker = CurrentThread::GetMemoryTracker()) {
-        // return thread_memory_tracker;
-    // }
+    if (auto* thread_memory_tracker = CurrentThread::getMemoryTracker()) {
+        return thread_memory_tracker;
+    }
 
     // Once the main thread is initialized,
     // total_memory_tracker is initialized too.
@@ -30,7 +29,6 @@ void allocImpl(Int64 size, bool throw_if_memory_exceeded) {
         //     // current_thread->un
         // } else { // total_memory_tracker only, ignore untracked_memory
         // }
-
         memory_tracker->allocImpl(size, throw_if_memory_exceeded);
     }
 }
@@ -65,7 +63,6 @@ void free(Int64 size) {
         // } else { // total_memory_tracker only, ignore untracked_memory
         //     memory_tracker->free(size);
         // }
-
         memory_tracker->free(size);
     }
 }
