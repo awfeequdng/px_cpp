@@ -1,5 +1,6 @@
 
 LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc new_delete.cc MemoryTracker.cc MemoryTrackerBlockerInThread.cc CurrentMemoryTracker.cc
+LIB_SRC += Allocator.cc mremap.cc
 
 SRC = ${LIB_SRC} main.cc
 
