@@ -3,7 +3,10 @@ LIB_SRC = ReadBufferFromFileBase.cc ReadBufferFromFileDescriptor.cc ReadBufferFr
 LIB_SRC += LimitReadBuffer.cc
 LIB_SRC += WriteBufferFromFileBase.cc WriteBufferFromFileDescriptor.cc WriteBufferFromFile.cc
 
-LIB_OBJS = $(subst *.cc,*.o,$(LIB_SRC))
+# LIB_OBJS = $(subst *.cc,*.o,$(LIB_SRC))
+LIB_AOBJS = $(subst .cc,.o,$(wildcard *.cc))
+LIB_OBJS := $(shell echo $(LIB_AOBJS) | sed 's/\<main.o\>//g')
+
 
 SRC = ${LIB_SRC} main.cc
 
@@ -12,12 +15,15 @@ IFLAGS =
 # IFLAGS += -I.. -I../base
 IFLAGS += -I../contrib/jemalloc-cmake/include
 IFLAGS += -I../contrib/libcxx/include -I../contrib/libcxxabi/include -I../contrib/libunwind/include
+IFLAGS += -I../
 
-CFALGS =
-CFALGS = -O3
+CFLAGS =
+CFLAGS += ${IFLAGS}
+CFLAGS += -O3
 # CFLAGS += -g -ggdb
 CFLAGS += -std=gnu++2b
 CFLAGS += -DUSE_JEMALLOC
+CFLAGS += -nodefaultlibs -nostdinc++
 
 # 以下这两种配置方式都正确, 这是通过编译参数传递给链接器的参数，如下两种方式都是正确的
 # 如果将参数直接传递给链接器，只能是 --no-undefined, 不能写成-no-undefined
@@ -34,7 +40,6 @@ CFLAGS += -DUSE_JEMALLOC
 
 LFLAGS =
 LFLAGS += --no-undefined
-LFLAGS += -nodefaultlibs -nostdinc++
 
 LFLAGS += -Wl,--start-group -lcxx -lcxxabi -lglibc-compatibility -lunwind -ljemalloc -lbase -lcommon -Wl,--end-group
 # LFLAGS += -lgbenchmark -lgtest
@@ -51,7 +56,6 @@ LFLAGS += -lpthread
 LFLAGS += -lc
 
 
-IFLAGS += -I../
 LFLAGS += -L../lib -rpath ../lib
 
 CXX = clang++
