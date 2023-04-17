@@ -1,11 +1,17 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.15.3)
-set(CMAKE_CXX_STANDARD 20)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-enable_language( C CXX ASM )
+project(contrib C CXX ASM )
 
 # set(CMAKE_BUILD_TYPE Debug)
-set(CMAKE_BUILD_TYPE Release)
-set(BUILD_SHARED_LIBS ON)
+# set(CMAKE_BUILD_TYPE Release)
+if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "None")
+    set (CMAKE_BUILD_TYPE "RelWithDebInfo")
+    message (STATUS "CMAKE_BUILD_TYPE is not set, set to default = ${CMAKE_BUILD_TYPE}")
+endif ()
+message (STATUS "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}")
+
+# set(BUILD_SHARED_LIBS ON)
 
 message("Compiler Version: ${CMAKE_CXX_COMPILER_VERSION}")
 message("Compiler ID: ${CMAKE_CXX_COMPILER_ID}")
@@ -29,6 +35,19 @@ option(ENABLE_COLORED_BUILD "Enable colors in compiler output" ON)
 
 set (CMAKE_COLOR_MAKEFILE ${ENABLE_COLORED_BUILD}) # works only for the makefile generator
 
+if (OS_LINUX AND (ARCH_AMD64 OR ARCH_AARCH64) AND NOT USE_MUSL)
+    # Only for Linux, x86_64 or aarch64.
+    option(GLIBC_COMPATIBILITY "Enable compatibility with older glibc libraries." ON)
+elseif(GLIBC_COMPATIBILITY)
+    message (${RECONFIGURE_MESSAGE_LEVEL} "Glibc compatibility cannot be enabled in current configuration")
+endif ()
+
+# Make sure the final executable has symbols exported
+set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -rdynamic")
+
+
+include(cmake/dbms_glob_sources.cmake)
+include (cmake/add_warning.cmake)
 
 add_library(global-group INTERFACE)
 include(cmake/linux/default_libs.cmake)
@@ -95,24 +114,25 @@ file(GLOB_RECURSE
         ${PROJECT_SOURCE_DIR}/src/*.cc
 )
 
-add_library(contrib SHARED
-    ${LINGJUN_SRC}
-)
-target_link_libraries(contrib
-    PUBLIC
-    # ch_contrib::fmt
-    pthread
-    # ch_contrib::gtest_all
-)
+# add_library(contrib SHARED
+#     ${LINGJUN_SRC}
+# )
+# target_link_libraries(contrib
+#     PUBLIC
+#     # ch_contrib::fmt
+#     pthread
+#     # ch_contrib::gtest_all
+# )
 
 add_executable(contrib_main
     main.cc
+    ${LINGJUN_SRC}
 )
 
-target_link_libraries(contrib_main
-    PUBLIC
-    contrib
-)
+# target_link_libraries(contrib_main
+#     PUBLIC
+
+# )
 
 # 当前我的环境中采用的clang15, 而系统中的libcxx是gcc8.0，因此不能直接编译通过，目前没有时间来处理库的问题，导致gtest编译不通过，这个后面再处理吧
 # 解决系统库问题有两种方法:
