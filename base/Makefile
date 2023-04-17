@@ -1,21 +1,29 @@
 
 LIB_SRC = sleep.cc Throttler.cc getThreadId.cc terminalColors.cc StringRef.cc
+LIB_AOBJS = $(subst .cc,.o,$(wildcard *.cc))
+LIB_OBJS := $(shell echo $(LIB_AOBJS) | sed 's/\<main.o\>//g')
 
 SRC = ${LIB_SRC} main.cc
 
 CFLAGS = -O3
-CFLAGS += -std=c++20 -nostdinc++
-CFLAGS += -I../contrib/libcxx/include -I../contrib/libcxxabi/include -I../contrib/libunwind/include
-CFLAGS += -I../contrib/cityhash102/include
-CFALGS +=-Wl,-no-undefined
+# CFLAGS += -std=c++20
+CFLAGS += -std=gnu++2b
+CFLAGS += -nostdinc++
+
+CFLAGS += -isystem ../contrib/jemalloc/include
+# CFLAGS += -I../contrib/jemalloc/include
+
+CFLAGS += -isystem ../contrib/libcxx/include -isystem../contrib/libcxxabi/include -isystem ../contrib/libunwind/include
+CFLAGS += -isystem ../contrib/cityhash102/include
 CFLAGS += -DUSE_JEMALLOC
 
 
 LFLAGS =
+LFLAGS += --no-undefined
 LFLAGS += -fuse-ld=lld
 LFLAGS += -nodefaultlibs
-LFLAGS += -L../lib/contrib -rpath ../lib/contrib  -lcxx  -lcxxabi -lunwind  -lcityhash
-LFLAGS +=
+LFLAGS += -L../lib/contrib -rpath ../lib/contrib
+LFLAGS += -Wl,--start-group -lcxx  -lcxxabi -lunwind  -lcityhash -Wl,--end-group
 
 # -ljemalloc必须放在 -lc的前面。
 # 由于-ljemalloc放在前面，调用malloc时优先解析libjemalloc库中的malloc函数，而不是libc中的malloc
@@ -27,6 +35,7 @@ LFLAGS += -lgcc
 LFLAGS += -lm -lrt -lpthread -ldl
 
 CXX = clang++
+AR = llvm-ar
 BIN = base
 
 LINUX="Linux"
@@ -43,13 +52,16 @@ debug:
 	# ${CXX} ${SRC} -E ${LFLAGS} ${CFLAGS} > ${BIN}.i
 	${CXX} ${SRC} -o ${BIN} ${LFLAGS} ${CFLAGS}
 
+%.o: %.cc
+	${CXX} $(CFLAGS)  -o $@ -c $<
 
-so:
-	${CXX} ${LIB_SRC} -o lib${BIN}.so -shared -fPIC ${LFLAGS} ${CFLAGS} -DNDEBUG=1
-	mv lib${BIN}.so ../lib
+
+static: ${LIB_OBJS}
+	${AR} qc lib${BIN}.a ${LIB_OBJS}
+	mv lib${BIN}.a ../lib
 
 run: all
 	./${BIN}
 
 clean:
-	rm -rf ${BIN} ${BIN}.i
+	rm -rf ${BIN} ${BIN}.i *.o

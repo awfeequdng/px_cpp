@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <string>
+#include <cstddef>
 
 using Int8 = int8_t;
 using Int16 = int16_t;
