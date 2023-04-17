@@ -143,6 +143,14 @@ void test_memory_tracker() {
     std::cout << "test_memory_tracker: cur_tracker : alloc : 7: " << cur_tracker->get() << std::endl;
 
 }
+
+// #include "Arena.hh"
+void test_Arena() {
+
+}
+
+#include <jemalloc/jemalloc.h>
+#include <emmintrin.h>
 int main() {
     MainThreadStatus::getInstance();
     std::cout << "current_thread: " << current_thread << std::endl;
@@ -171,5 +179,8 @@ int main() {
     delete p;
     std::cout << "total_memory_tracker final : alloc : " << total_memory_tracker.get() << std::endl;
     std::cout << "cur_tracker final: alloc : " << cur_tracker->get() << std::endl;
+
+
+    test_Arena();
     return 0;
 }

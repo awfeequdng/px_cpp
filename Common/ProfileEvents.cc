@@ -10,7 +10,9 @@
 
 #define APPLY_FOR_EVENTS(M) \
     M(MEMORY_ALLOC, "allocated memory count") \
-    M(MEMORY_FREE, "free memory count")
+    M(MEMORY_FREE, "free memory count") \
+    M(ArenaAllocChunks, "Number of chunks allocated for memory Arena (used for GROUP BY and similar operations)") \
+    M(ArenaAllocBytes, "Number of bytes allocated for memory Arena (used for GROUP BY and similar operations)")
 
 namespace ProfileEvents {
 #define M(NAME, DOCUMENTATION) extern const Event NAME = __COUNTER__;
