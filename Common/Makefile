@@ -2,7 +2,10 @@
 LIB_SRC = ThreadStatus.cc ProfileEvents.cc CurrentThread.cc new_delete.cc MemoryTracker.cc MemoryTrackerBlockerInThread.cc CurrentMemoryTracker.cc
 LIB_SRC += Allocator.cc mremap.cc
 
-LIB_OBJS = $(subst *.cc,*.o,$(LIB_SRC))
+LIB_AOBJS = $(subst .cc,.o,$(wildcard *.cc))
+LIB_OBJS := $(shell echo $(LIB_AOBJS) | sed 's/\<main.o\>//g')
+
+# LIB_OBJS = $(subst *.cc,*.o,$(LIB_SRC))
 
 SRC = ${LIB_SRC} main.cc
 
@@ -20,7 +23,7 @@ IFLAGS += -isystem../contrib/jemalloc/include
 
 
 CFLAGS =
-CFALGS += ${IFLAGS}
+CFLAGS += ${IFLAGS}
 
 # CFLAGS += -std=gnu++23
 CFLAGS += -std=gnu++2b
