@@ -81,4 +81,4 @@ run: all
 	./${BIN}
 
 clean:
-	rm -rf ${BIN}
+	rm -rf ${BIN} *.o
