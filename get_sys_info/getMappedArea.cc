@@ -2,7 +2,7 @@
 
 #include "read_write_buffer/ReadBufferFromFile.hh"
 #include "read_write_buffer/ReadHelpers.hh"
-#include "hex/hex.hh"
+#include "base/hex.hh"
 #include "StringUtils/StringUtils.hh"
 #include <cstdint>
 #include <stdexcept>
