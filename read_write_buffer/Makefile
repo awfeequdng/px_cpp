@@ -41,7 +41,7 @@ CFLAGS += -nodefaultlibs -nostdinc++
 LFLAGS =
 LFLAGS += --no-undefined
 
-LFLAGS += -Wl,--start-group -lcxx -lcxxabi -lglibc-compatibility -lunwind -ljemalloc -lbase -lcommon -Wl,--end-group
+LFLAGS += -Wl,--start-group -lcxx -lcxxabi -lglibc-compatibility -lharmful -lunwind -ljemalloc -lbase -lcommon -Wl,--end-group
 # LFLAGS += -lgbenchmark -lgtest
 LFLAGS += -L../lib/contrib
 LFLAGS += -rpath ../lib/contrib
