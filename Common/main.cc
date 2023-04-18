@@ -144,7 +144,8 @@ void test_memory_tracker() {
 
 }
 
-// #include "Arena.hh"
+#include "Arena.hh"
+#include "ArenaAllocator.hh"
 void test_Arena() {
 
 }

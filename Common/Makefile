@@ -51,7 +51,7 @@ LFLAGS += -nodefaultlibs -nostdinc++
 
 LFLAGS += -Wl,--start-group -lcxx -lcxxabi  -lunwind -lglibc-compatibility -ljemalloc -lharmful -Wl,--end-group
 LFLAGS += -lbase
-LFLAGS += -lc -lm -ldl
+LFLAGS += -lc -lm -ldl -lgcc_s
 # LFLAGS += -lgbenchmark -lgtest
 LFLAGS += -L../lib/contrib
 LFLAGS +=-rpath ../lib/contrib
@@ -86,6 +86,7 @@ debug:
 static: ${LIB_OBJS}
 	$(AR) qc lib${BIN}.a ${LIB_OBJS}
 	mv lib${BIN}.a ../lib
+	rm *.o
 
 
 run: all

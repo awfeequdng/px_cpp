@@ -10,3 +10,5 @@
 
 #define ALWAYS_INLINE __attribute__((__always_inline__))
 #define NO_INLINE __attribute__((__noinline__))
+
+#define PADDING_FOR_SIMD    64
