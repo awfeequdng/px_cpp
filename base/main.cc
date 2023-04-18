@@ -146,7 +146,12 @@ void test_scope_guard() {
     std::cout << "hello world after scope guard2" << std::endl;
 }
 
-
+#include <time.h>
+void test_harmful() {
+    std::cout << "--------- " << __FUNCTION__ << "_________BEGIN" << std::endl;
+    auto tm = gmtime(NULL);
+    std::cout << "--------- " << __FUNCTION__ << "_________END" << std::endl;
+}
 
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
@@ -170,5 +175,6 @@ int main() {
     test_StringRef();
 
     test_scope_guard();
+    test_harmful();
     return 0;
 }

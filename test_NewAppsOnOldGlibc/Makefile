@@ -1,4 +1,5 @@
 
+# http://www.lightofdawn.org/wiki/wiki.cgi/NewAppsOnOldGlibc
 SRC = main.cc
 
 CFLAGS = -std=c++20 -O0

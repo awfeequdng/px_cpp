@@ -23,7 +23,9 @@ LFLAGS += --no-undefined
 # LFLAGS += -fuse-ld=lld
 LFLAGS += -nodefaultlibs
 LFLAGS += -L../lib/contrib -rpath ../lib/contrib
-LFLAGS += -Wl,--start-group -lcxx  -lcxxabi -lunwind  -lcityhash -lglibc-compatibility -lharmful -ljemalloc -Wl,--end-group
+#LFLAGS += -Wl,--start-group -lcxx  -lcxxabi -lunwind  -lcityhash -lmemcpy -lglibc-compatibility -lharmful -ljemalloc -Wl,--end-group
+#LFLAGS += -Wl,--start-group -lcxx  -lcxxabi -lunwind  -lcityhash -lglibc-compatibility -lharmful -ljemalloc -Wl,--end-group
+LFLAGS += -Wl,--start-group -lcxx  -lcxxabi -lunwind  -lcityhash -lharmful -ljemalloc -Wl,--end-group
 
 # -ljemalloc必须放在 -lc的前面。
 # 由于-ljemalloc放在前面，调用malloc时优先解析libjemalloc库中的malloc函数，而不是libc中的malloc
