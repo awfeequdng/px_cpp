@@ -171,6 +171,14 @@ void test_bit_helpers() {
     std::cout << std::hex << "hex maskLowBits of 33: " << j << std::endl;
     j = maskLowBits<int>(33);
     std::cout << std::dec << "dec maskLowBits of 33: " << j << std::endl;
+
+    UInt8 k = maskLowBits<UInt8>(3);
+    std::cout << std::dec << "maskLowBits<UInt8> of 3: " << (UInt32)k << std::endl;
+    Int8 k1 = maskLowBits<Int8>(3);
+    std::cout << std::dec << "maskLowBits<UInt8> of 3: " << (Int32)k1 << std::endl;
+
+    std::cout << "bitScanReverse 20: " << bitScanReverse(20) << std::endl;
+    std::cout << "roundUpToPowerOfTwoOrZero 20: " << roundUpToPowerOfTwoOrZero(20) << std::endl;
 }
 
 int main() {
