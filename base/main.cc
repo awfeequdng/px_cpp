@@ -154,7 +154,7 @@ void test_harmful() {
     std::cout << "--------- " << __FUNCTION__ << "_________END" << std::endl;
 }
 
-#include "BitHelpers.h"
+#include "BitHelpers.hh"
 void test_bit_helpers() {
     int i = 245;
     std::cout << std::dec << std::endl;
@@ -181,6 +181,21 @@ void test_bit_helpers() {
     std::cout << "roundUpToPowerOfTwoOrZero 20: " << roundUpToPowerOfTwoOrZero(20) << std::endl;
 }
 
+#include "intExp.hh"
+void test_int_exp() {
+    std::cout << "--------- " << __FUNCTION__ << "_________END" << std::endl;
+
+    auto i = intExp10OfSize<UInt64>(10);
+    std::cout << "i = " << i << std::endl;
+
+    auto i256 = intExp10OfSize<UInt256>(60);
+    std::cout << "i256 = " << i256 << std::endl;
+    i256 = intExp10OfSize<UInt256>(70);
+    std::cout << "i256 = " << i256 << std::endl;
+    i256 = intExp10OfSize<UInt256>(80);
+    std::cout << "i256 = " << i256 << std::endl;
+}
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -205,6 +220,8 @@ int main() {
     test_scope_guard();
 
     test_bit_helpers();
+
+    test_int_exp();
 
     // 这个可能会让程序直接挂掉，所以放在最后面
     test_harmful();
