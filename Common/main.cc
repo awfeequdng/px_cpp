@@ -146,8 +146,37 @@ void test_memory_tracker() {
 
 #include "Arena.hh"
 #include "ArenaAllocator.hh"
+#include "ArenaUtils.h"
 void test_Arena() {
+    std::cout << "______________" << __FUNCTION__ << "__________________" << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get1: " << total_memory_tracker.get() << std::endl;
+    ArenaAllocator allocator;
+    Arena arena;
+    std::cout << "test_Arena: total_memory_tracker : get2: " << total_memory_tracker.get() << std::endl;
+    auto ptr = allocator.alloc(1024, &arena);
+    std::cout << "alloc ptr: " << ptr << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get3: " << total_memory_tracker.get() << std::endl;
+    ptr = allocator.alloc(4097, &arena);
+    std::cout << "alloc ptr: " << ptr << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get4: " << total_memory_tracker.get() << std::endl;
 
+    ArenaAllocatorWithStackMemory<> stack_allocator;
+    ptr = stack_allocator.alloc(30, &arena);
+    std::cout << "stack alloc ptr: " << ptr << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get5: " << total_memory_tracker.get() << std::endl;
+    ptr = stack_allocator.alloc(50, &arena);
+    std::cout << "stack alloc ptr: " << ptr << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get6: " << total_memory_tracker.get() << std::endl;
+    ptr = stack_allocator.alloc(64, &arena);
+    std::cout << "stack alloc ptr: " << ptr << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get7: " << total_memory_tracker.get() << std::endl;
+    ptr = stack_allocator.alloc(65, &arena);
+    std::cout << "stack alloc ptr: " << ptr << std::endl;
+    std::cout << "test_Arena: total_memory_tracker : get7: " << total_memory_tracker.get() << std::endl;
+
+    String str("hello world");
+    auto res = copyStringInArena(arena, StringRef(str));
+    std::cout << "res: " << res.data << std::endl;
 }
 
 #include <jemalloc/jemalloc.h>
@@ -183,5 +212,6 @@ int main() {
 
 
     test_Arena();
+    std::cout << "test_Arena: total_memory_tracker : get after arena: " << total_memory_tracker.get() << std::endl;
     return 0;
 }

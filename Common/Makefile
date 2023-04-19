@@ -16,6 +16,7 @@ IFLAGS =
 # IFLAGS += -I../contrib/jemalloc/include
 # IFLAGS += -I../contrib/build/jemalloc-cmake/include_linux_x86_64/jemalloc/internal
 IFLAGS += -isystem ../contrib/libcxx/include -isystem../contrib/libcxxabi/include -isystem../contrib/libunwind/include
+IFLAGS += -I ../contrib/cityhash102/include
 IFLAGS += -I.. -I../base
 IFLAGS += -isystem../contrib/jemalloc-cmake/include
 IFLAGS += -isystem../contrib/jemalloc/include
