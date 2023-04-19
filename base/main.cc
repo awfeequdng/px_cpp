@@ -8,6 +8,7 @@
 #include "TokenBucket.hh"
 
 #include <cmath>
+#include <ios>
 #include <iostream>
 #include <thread>
 
@@ -153,6 +154,25 @@ void test_harmful() {
     std::cout << "--------- " << __FUNCTION__ << "_________END" << std::endl;
 }
 
+#include "BitHelpers.h"
+void test_bit_helpers() {
+    int i = 245;
+    std::cout << std::dec << std::endl;
+    std::cout << "roundUpToPowerOfTwoOrZero(i): " << roundUpToPowerOfTwoOrZero(i) << std::endl;
+
+    int j = maskLowBits<int>(10);
+    std::cout << std::hex << "maskLowBits of 10: " << j << std::endl;
+
+    j = maskLowBits<int>(31);
+    std::cout << std::hex << "maskLowBits of 31: " << j << std::endl;
+    j = maskLowBits<int>(32);
+    std::cout << std::hex << "maskLowBits of 32: " << j << std::endl;
+    j = maskLowBits<int>(33);
+    std::cout << std::hex << "hex maskLowBits of 33: " << j << std::endl;
+    j = maskLowBits<int>(33);
+    std::cout << std::dec << "dec maskLowBits of 33: " << j << std::endl;
+}
+
 int main() {
     std::cout << "sleep for 2 seconds" << std::endl;
     sleepForSeconds(2);
@@ -175,6 +195,10 @@ int main() {
     test_StringRef();
 
     test_scope_guard();
+
+    test_bit_helpers();
+
+    // 这个可能会让程序直接挂掉，所以放在最后面
     test_harmful();
     return 0;
 }

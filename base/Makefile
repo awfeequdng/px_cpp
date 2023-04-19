@@ -60,6 +60,7 @@ debug:
 static: ${LIB_OBJS}
 	${AR} qc lib${BIN}.a ${LIB_OBJS}
 	mv lib${BIN}.a ../lib
+	rm *.o -rf
 
 run: all
 	./${BIN}
