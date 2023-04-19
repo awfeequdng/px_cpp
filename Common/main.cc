@@ -147,6 +147,8 @@ void test_memory_tracker() {
 #include "Arena.hh"
 #include "ArenaAllocator.hh"
 #include "ArenaUtils.h"
+#include "ArenaWithFreeLists.hh"
+
 void test_Arena() {
     std::cout << "______________" << __FUNCTION__ << "__________________" << std::endl;
     std::cout << "test_Arena: total_memory_tracker : get1: " << total_memory_tracker.get() << std::endl;
@@ -177,6 +179,19 @@ void test_Arena() {
     String str("hello world");
     auto res = copyStringInArena(arena, StringRef(str));
     std::cout << "res: " << res.data << std::endl;
+
+    ArenaWithFreeLists arena_with_freelists;
+
+    auto ptr1 = arena_with_freelists.alloc(100);
+    std::cout << "ptr1: " << (void*)ptr1 << std::endl;
+    arena_with_freelists.free(ptr1, 100);
+
+    ptr1 = arena_with_freelists.alloc(128);
+    std::cout << "ptr1: " << (void*)ptr1 << std::endl;
+    arena_with_freelists.free(ptr1, 100);
+
+    ptr1 = arena_with_freelists.alloc(129);
+    std::cout << "ptr1: " << (void*)ptr1 << std::endl;
 }
 
 #include <jemalloc/jemalloc.h>
