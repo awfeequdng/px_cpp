@@ -1,0 +1,8 @@
+# 问题（这个步骤无法复现）
+- 编译动态库libbase.so 和 libderive.so, 使用命令`make so`
+- 在base.hh中给BaseCls1类中增加一个成员，为double 类型
+- 然后编译动态库libbase.so: `make build_base`
+- 编译可执行程序并运行：`make run`
+
+
+# 不能复现的原因，由于在DeriveCls类中实现的虚函数，在main函数中调用它时，可执行程序找不到其符号，
